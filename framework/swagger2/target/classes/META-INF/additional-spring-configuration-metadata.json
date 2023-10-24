@@ -1,0 +1,64 @@
+{
+  "properties": [
+    {
+      "name": "swagger2.show",
+      "type": "java.lang.Boolean",
+      "description": "whether or not showing the interface doc",
+      "defaultValue": true
+    },
+    {
+      "name": "swagger2.group-name",
+      "type": "java.lang.String",
+      "description": "group name",
+      "defaultValue": "r-pan"
+    },
+    {
+      "name": "swagger2.title",
+      "type": "java.lang.String",
+      "description": "interface doc title",
+      "defaultValue": "r-pan-server"
+    },
+    {
+      "name": "swagger2.description",
+      "type": "java.lang.String",
+      "description": "interface doc description",
+      "defaultValue": "r-pan-server"
+    },
+    {
+      "name": "swagger2.terms-of-service-url",
+      "type": "java.lang.String",
+      "description": "service ur",
+      "defaultValue": "http://127.0.0.1:${server.port}"
+    },
+    {
+      "name": "swagger2.base-package",
+      "type": "java.lang.String",
+      "description": "scan path",
+      "defaultValue": "com.imooc.pan"
+    },
+    {
+      "name": "swagger2.contact-name",
+      "type": "java.lang.String",
+      "description": "contact name",
+      "defaultValue": "Ian"
+    },
+    {
+      "name": "swagger2.contact-url",
+      "type": "java.lang.String",
+      "description": "Contact Url",
+      "defaultValue": "https://github.com/IanZC0der"
+    },
+    {
+      "name": "swagger2.contact-email",
+      "type": "java.lang.String",
+      "description": "contact email",
+      "defaultValue": "ianzhangbc@outlook.com"
+    },
+    {
+      "name": "swagger2.version",
+      "type": "java.lang.String",
+      "description": "project version",
+      "defaultValue": "1.0"
+    }
+  ]
+}

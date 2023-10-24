@@ -1,0 +1,82 @@
+{
+  "groups": [
+    {
+      "name": "swagger2",
+      "type": "com.imooc.pan.swagger2.Swagger2ConfigProperties",
+      "sourceType": "com.imooc.pan.swagger2.Swagger2ConfigProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "swagger2.base-package",
+      "type": "java.lang.String",
+      "description": "scan path",
+      "sourceType": "com.imooc.pan.swagger2.Swagger2ConfigProperties",
+      "defaultValue": "com.imooc.pan"
+    },
+    {
+      "name": "swagger2.contact-email",
+      "type": "java.lang.String",
+      "description": "contact email",
+      "sourceType": "com.imooc.pan.swagger2.Swagger2ConfigProperties",
+      "defaultValue": "ianzhangbc@outlook.com"
+    },
+    {
+      "name": "swagger2.contact-name",
+      "type": "java.lang.String",
+      "description": "contact name",
+      "sourceType": "com.imooc.pan.swagger2.Swagger2ConfigProperties",
+      "defaultValue": "Ian"
+    },
+    {
+      "name": "swagger2.contact-url",
+      "type": "java.lang.String",
+      "description": "Contact Url",
+      "sourceType": "com.imooc.pan.swagger2.Swagger2ConfigProperties",
+      "defaultValue": "https:\/\/github.com\/IanZC0der"
+    },
+    {
+      "name": "swagger2.description",
+      "type": "java.lang.String",
+      "description": "interface doc description",
+      "sourceType": "com.imooc.pan.swagger2.Swagger2ConfigProperties",
+      "defaultValue": "r-pan-server"
+    },
+    {
+      "name": "swagger2.group-name",
+      "type": "java.lang.String",
+      "description": "group name",
+      "sourceType": "com.imooc.pan.swagger2.Swagger2ConfigProperties",
+      "defaultValue": "r-pan"
+    },
+    {
+      "name": "swagger2.show",
+      "type": "java.lang.Boolean",
+      "description": "whether or not showing the interface doc",
+      "sourceType": "com.imooc.pan.swagger2.Swagger2ConfigProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "swagger2.terms-of-service-url",
+      "type": "java.lang.String",
+      "description": "service ur",
+      "sourceType": "com.imooc.pan.swagger2.Swagger2ConfigProperties",
+      "defaultValue": "http:\/\/127.0.0.1:${server.port}"
+    },
+    {
+      "name": "swagger2.title",
+      "type": "java.lang.String",
+      "description": "interface doc title",
+      "sourceType": "com.imooc.pan.swagger2.Swagger2ConfigProperties",
+      "defaultValue": "r-pan-server"
+    },
+    {
+      "name": "swagger2.version",
+      "type": "java.lang.String",
+      "description": "project version",
+      "sourceType": "com.imooc.pan.swagger2.Swagger2ConfigProperties",
+      "defaultValue": "1.0"
+    }
+  ],
+  "hints": []
+}
