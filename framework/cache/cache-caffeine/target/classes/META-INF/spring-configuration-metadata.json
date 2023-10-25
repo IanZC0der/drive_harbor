@@ -1,0 +1,30 @@
+{
+  "groups": [
+    {
+      "name": "com.imooc.pan.cache.caffeine",
+      "type": "com.imooc.pan.cache.caffeine.config.CaffeineCacheProperties",
+      "sourceType": "com.imooc.pan.cache.caffeine.config.CaffeineCacheProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.imooc.pan.cache.caffeine.allow-null-value",
+      "type": "java.lang.Boolean",
+      "description": "allow NULL as cache value com.imooc.pan.cache.caffeine.allow-null-value",
+      "sourceType": "com.imooc.pan.cache.caffeine.config.CaffeineCacheProperties"
+    },
+    {
+      "name": "com.imooc.pan.cache.caffeine.init-cache-capacity",
+      "type": "java.lang.Integer",
+      "description": "initial cache capacity com.imooc.pan.cache.caffeine.init-cache-capacity",
+      "sourceType": "com.imooc.pan.cache.caffeine.config.CaffeineCacheProperties"
+    },
+    {
+      "name": "com.imooc.pan.cache.caffeine.max-cache-capacity",
+      "type": "java.lang.Long",
+      "description": "max cache capacity. For oversized ones, release the cache based on LRU policy com.imooc.pan.cache.caffeine.max-cache-capacity",
+      "sourceType": "com.imooc.pan.cache.caffeine.config.CaffeineCacheProperties"
+    }
+  ],
+  "hints": []
+}

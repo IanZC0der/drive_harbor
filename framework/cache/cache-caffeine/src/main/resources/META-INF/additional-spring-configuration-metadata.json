@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "com.imooc.pan.cache.caffeine.init-cache-capacity",
+      "type": "java.lang.Integer",
+      "description": "caffeine cache initial capacity",
+      "defaultValue": 256
+    },
+    {
+      "name": "com.imooc.pan.cache.caffeine.max-cache-capacity",
+      "type": "java.lang.Long",
+      "description": "caffeine cache max capacity",
+      "defaultValue": "10000L"
+
+    },
+    {
+      "name": "com.imooc.pan.cache.caffeine.allow-null-value",
+      "type": "java.lang.Boolean",
+      "description": "allow null values",
+      "defaultValue": "true"
+
+    }
+  ]
+}

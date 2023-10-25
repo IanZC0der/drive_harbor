@@ -2,6 +2,12 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/distribution/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/cache/cache-caffeine/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/cache/cache-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/cache/cache-redis/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/cache/core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/cache/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/cache/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/orm/mybatis-plus/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/orm/src/main/java" charset="UTF-8" />

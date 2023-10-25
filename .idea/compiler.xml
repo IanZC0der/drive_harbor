@@ -7,10 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="r-pan-mybatis-plus" />
         <module name="r-pan-core" />
-        <module name="r-pan-web" />
         <module name="r-pan-swagger2" />
+        <module name="r-pan-cache-core" />
+        <module name="r-pan-cache-redis" />
+        <module name="r-pan-cache-caffeine" />
+        <module name="r-pan-mybatis-plus" />
+        <module name="r-pan-web" />
         <module name="r-pan-distribution" />
       </profile>
       <profile name="Annotation profile for r-pan-parent" enabled="true">
@@ -33,6 +36,10 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="r-pan-cache" options="-parameters" />
+      <module name="r-pan-cache-caffeine" options="-parameters" />
+      <module name="r-pan-cache-core" options="-parameters" />
+      <module name="r-pan-cache-redis" options="-parameters" />
       <module name="r-pan-core" options="-parameters" />
       <module name="r-pan-distribution" options="-parameters" />
       <module name="r-pan-framework" options="-parameters" />
