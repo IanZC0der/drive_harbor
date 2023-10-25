@@ -18,6 +18,7 @@
         <module>orm</module>
         <module>orm/mybatis-plus</module>
         <module>cache</module>
+        <module>schedule</module>
     </modules>
 
 

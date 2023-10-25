@@ -13,6 +13,7 @@
         <module name="r-pan-cache-redis" />
         <module name="r-pan-cache-caffeine" />
         <module name="r-pan-mybatis-plus" />
+        <module name="r-pan-schedule" />
         <module name="r-pan-web" />
         <module name="r-pan-distribution" />
       </profile>
@@ -46,6 +47,7 @@
       <module name="r-pan-mybatis-plus" options="-parameters" />
       <module name="r-pan-orm" options="-parameters" />
       <module name="r-pan-parent" options="-parameters" />
+      <module name="r-pan-schedule" options="-parameters" />
       <module name="r-pan-server" options="-parameters" />
       <module name="r-pan-swagger2" options="-parameters" />
       <module name="r-pan-web" options="-parameters" />

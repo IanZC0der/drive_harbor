@@ -1,4 +1,4 @@
-package com.imooc.pan.cache.caffeine.test.instance;
+package com.imooc.pan.cache.redis.test.instance;
 
 import com.imooc.pan.cache.core.constants.CacheConstants;
 import lombok.extern.slf4j.Slf4j;
