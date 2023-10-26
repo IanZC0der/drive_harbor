@@ -1,6 +1,6 @@
 package com.imooc.pan.server.modules.file.mapper;
 
-import com.imooc.pan.server.modules.file.entity.driverHarborUserFile;
+import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-10-23 21:04:43
 * @Entity com.imooc.pan.server.modules.file.entity.driverHarborUserFile
 */
-public interface driverHarborUserFileMapper extends BaseMapper<driverHarborUserFile> {
+public interface driverHarborUserFileMapper extends BaseMapper<driveHarborUserFile> {
 
 }
 

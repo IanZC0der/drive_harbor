@@ -10,20 +10,23 @@
     {
       "name": "com.imooc.pan.cache.caffeine.allow-null-value",
       "type": "java.lang.Boolean",
-      "description": "allow NULL as cache value com.imooc.pan.cache.caffeine.allow-null-value",
-      "sourceType": "com.imooc.pan.cache.caffeine.config.CaffeineCacheProperties"
+      "description": "allow null values",
+      "sourceType": "com.imooc.pan.cache.caffeine.config.CaffeineCacheProperties",
+      "defaultValue": "true"
     },
     {
       "name": "com.imooc.pan.cache.caffeine.init-cache-capacity",
       "type": "java.lang.Integer",
-      "description": "initial cache capacity com.imooc.pan.cache.caffeine.init-cache-capacity",
-      "sourceType": "com.imooc.pan.cache.caffeine.config.CaffeineCacheProperties"
+      "description": "caffeine cache initial capacity",
+      "sourceType": "com.imooc.pan.cache.caffeine.config.CaffeineCacheProperties",
+      "defaultValue": 256
     },
     {
       "name": "com.imooc.pan.cache.caffeine.max-cache-capacity",
       "type": "java.lang.Long",
-      "description": "max cache capacity. For oversized ones, release the cache based on LRU policy com.imooc.pan.cache.caffeine.max-cache-capacity",
-      "sourceType": "com.imooc.pan.cache.caffeine.config.CaffeineCacheProperties"
+      "description": "caffeine cache max capacity",
+      "sourceType": "com.imooc.pan.cache.caffeine.config.CaffeineCacheProperties",
+      "defaultValue": "10000L"
     }
   ],
   "hints": []

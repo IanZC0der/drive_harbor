@@ -39,7 +39,7 @@ public interface driveHarborConstants {
     /**
      * minus one integer
      */
-    Integer MINUS_ONT_INT = -1;
+    Integer MINUS_ONE_INT = -1;
     /**
      * true string
      */

@@ -30,6 +30,16 @@
             <artifactId>r-pan-mybatis-plus</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.imooc.pan</groupId>
+            <artifactId>r-pan-schedule</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.imooc.pan</groupId>
+            <artifactId>r-pan-cache-redis</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>r-pan-server</finalName>

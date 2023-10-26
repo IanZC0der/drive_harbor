@@ -19,7 +19,7 @@ public class driveHarborUser implements Serializable {
      * user id
      */
     @TableId(value = "user_id")
-    private Long user_id;
+    private Long userId;
 
     /**
      * user name
@@ -55,13 +55,13 @@ public class driveHarborUser implements Serializable {
      * account creation time
      */
     @TableField(value = "create_time")
-    private Date create_time;
+    private Date createTime;
 
     /**
      * update time
      */
     @TableField(value = "update_time")
-    private Date update_time;
+    private Date updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

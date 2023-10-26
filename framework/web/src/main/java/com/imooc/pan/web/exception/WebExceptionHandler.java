@@ -1,6 +1,7 @@
 package com.imooc.pan.web.exception;
 
 import com.imooc.pan.core.exception.driveHarborBusinessException;
+import com.imooc.pan.core.exception.driveHarborFrameworkException;
 import com.imooc.pan.core.response.R;
 import com.imooc.pan.core.response.ResponseCode;
 import org.springframework.validation.BindException;
@@ -52,6 +53,10 @@ public class WebExceptionHandler {
         return R.fail(ResponseCode.ERROR_PARAM.getCode(), fieldError.getDefaultMessage());
     }
 
+    @ExceptionHandler(value = driveHarborFrameworkException.class)
+    public R driveHarborFrameworkExceptionHandler(driveHarborFrameworkException e) {
+        return R.fail(ResponseCode.ERROR.getCode(), e.getMessage());
+    }
     @ExceptionHandler(value = RuntimeException.class)
     public R runtimeExceptionHandler(RuntimeException e) {
         return R.fail(ResponseCode.ERROR.getCode(), e.getMessage());

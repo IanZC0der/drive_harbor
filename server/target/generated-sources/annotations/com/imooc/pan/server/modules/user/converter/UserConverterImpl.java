@@ -1,0 +1,63 @@
+package com.imooc.pan.server.modules.user.converter;
+
+import com.imooc.pan.server.modules.user.context.UserLoginContext;
+import com.imooc.pan.server.modules.user.context.UserRegisterContext;
+import com.imooc.pan.server.modules.user.entity.driveHarborUser;
+import com.imooc.pan.server.modules.user.po.UserLoginPO;
+import com.imooc.pan.server.modules.user.po.UserRegisterPO;
+import javax.annotation.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2023-10-26T14:04:29-0500",
+    comments = "version: 1.5.2.Final, compiler: javac, environment: Java 1.8.0_341 (Oracle Corporation)"
+)
+@Component
+public class UserConverterImpl implements UserConverter {
+
+    @Override
+    public UserRegisterContext userRegisterPO2UserRegisterContext(UserRegisterPO userRegisterPO) {
+        if ( userRegisterPO == null ) {
+            return null;
+        }
+
+        UserRegisterContext userRegisterContext = new UserRegisterContext();
+
+        userRegisterContext.setUsername( userRegisterPO.getUsername() );
+        userRegisterContext.setPassword( userRegisterPO.getPassword() );
+        userRegisterContext.setQuestion( userRegisterPO.getQuestion() );
+        userRegisterContext.setAnswer( userRegisterPO.getAnswer() );
+
+        return userRegisterContext;
+    }
+
+    @Override
+    public driveHarborUser userRegisterContext2DriveHarborUser(UserRegisterContext userRegisterContext) {
+        if ( userRegisterContext == null ) {
+            return null;
+        }
+
+        driveHarborUser driveHarborUser = new driveHarborUser();
+
+        driveHarborUser.setUsername( userRegisterContext.getUsername() );
+        driveHarborUser.setQuestion( userRegisterContext.getQuestion() );
+        driveHarborUser.setAnswer( userRegisterContext.getAnswer() );
+
+        return driveHarborUser;
+    }
+
+    @Override
+    public UserLoginContext userLoginPO2UserLoginContext(UserLoginPO userLoginPO) {
+        if ( userLoginPO == null ) {
+            return null;
+        }
+
+        UserLoginContext userLoginContext = new UserLoginContext();
+
+        userLoginContext.setUsername( userLoginPO.getUsername() );
+        userLoginContext.setPassword( userLoginPO.getPassword() );
+
+        return userLoginContext;
+    }
+}

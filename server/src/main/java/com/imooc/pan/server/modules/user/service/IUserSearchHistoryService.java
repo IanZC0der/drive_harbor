@@ -8,6 +8,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @description 针对表【r_pan_user_search_history(user search history table)】的数据库操作Service
 * @createDate 2023-10-23 20:56:15
 */
-public interface driveHarborUserSearchHistoryService extends IService<driveHarborUserSearchHistory> {
+public interface IUserSearchHistoryService extends IService<driveHarborUserSearchHistory> {
 
 }

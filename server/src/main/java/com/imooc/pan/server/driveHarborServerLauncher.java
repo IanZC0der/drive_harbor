@@ -15,9 +15,6 @@ import javax.validation.constraints.NotBlank;
 
 @SpringBootApplication(scanBasePackages = driveHarborConstants.BASE_COMPONENT_SCAN_PATH)
 @ServletComponentScan(basePackages = driveHarborConstants.BASE_COMPONENT_SCAN_PATH)
-@RestController
-@Api("Test Swagger2 Interface Class")
-@Validated
 @EnableTransactionManagement
 @MapperScan(basePackages = driveHarborConstants.BASE_COMPONENT_SCAN_PATH + ".server.modules.**.mapper")
 public class driveHarborServerLauncher {
@@ -25,10 +22,5 @@ public class driveHarborServerLauncher {
         SpringApplication.run(driveHarborServerLauncher.class);
     }
 
-    @GetMapping("hello")
-    public R<String> hello(@NotBlank(message = "name cannot be blank") String name) {
-        System.out.println(Thread.currentThread().getContextClassLoader());
-        return R.success("hello" + name + "! changed again again");
 
-    }
 }
