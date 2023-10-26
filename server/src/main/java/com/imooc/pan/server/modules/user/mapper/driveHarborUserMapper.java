@@ -2,6 +2,7 @@ package com.imooc.pan.server.modules.user.mapper;
 
 import com.imooc.pan.server.modules.user.entity.driveHarborUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author benchi
@@ -11,6 +12,12 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface driveHarborUserMapper extends BaseMapper<driveHarborUser> {
 
+    /**
+     * look up user security question by the username
+     * @param username
+     * @return
+     */
+    String selectQuestionByUsername(@Param("username") String username);
 }
 
 

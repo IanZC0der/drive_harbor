@@ -2,9 +2,15 @@ package com.imooc.pan.server.modules.user.controller;
 
 import com.imooc.pan.core.response.R;
 import com.imooc.pan.core.utils.IdUtil;
+import com.imooc.pan.server.common.annotation.LoginIgnore;
+import com.imooc.pan.server.common.utils.UserIdUtil;
+import com.imooc.pan.server.modules.user.context.CheckAnswerContext;
+import com.imooc.pan.server.modules.user.context.CheckUsernameContext;
 import com.imooc.pan.server.modules.user.context.UserLoginContext;
 import com.imooc.pan.server.modules.user.context.UserRegisterContext;
 import com.imooc.pan.server.modules.user.converter.UserConverter;
+import com.imooc.pan.server.modules.user.po.CheckAnswerPO;
+import com.imooc.pan.server.modules.user.po.CheckUsernamePO;
 import com.imooc.pan.server.modules.user.po.UserLoginPO;
 import com.imooc.pan.server.modules.user.po.UserRegisterPO;
 import com.imooc.pan.server.modules.user.service.IUserService;
@@ -35,6 +41,7 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
+    @LoginIgnore
     @PostMapping("register")
     public R register(@Validated @RequestBody UserRegisterPO userRegisterPO) {
         UserRegisterContext userRegisterContext = userConverter.userRegisterPO2UserRegisterContext(userRegisterPO);
@@ -47,10 +54,50 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
+    @LoginIgnore
     @PostMapping("login")
     public R login(@Validated @RequestBody UserLoginPO userLoginPO) {
         UserLoginContext userLoginContext = userConverter.userLoginPO2UserLoginContext(userLoginPO);
         String accessToken = iUserService.login(userLoginContext);
         return R.data(accessToken);
+    }
+
+    @ApiOperation(
+            value = "user logout interface",
+            notes = "this interface provides logout functionality",
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @PostMapping("exit")
+    public R exit() {
+        iUserService.exit(UserIdUtil.get());
+        return R.success();
+    }
+
+    @ApiOperation(
+            value = "User forgot the password. Verify the user name",
+            notes = "this interface verifies the username while user forgets the password and requests to change the password",
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @LoginIgnore
+    @PostMapping("username/check")
+    public R checkUsername(@Validated @RequestBody CheckUsernamePO checkUsernamePO) {
+        CheckUsernameContext checkUsernameContext = userConverter.checkUsernamePO2CheckUsernameContext(checkUsernamePO);
+        String question = iUserService.checkUsername(checkUsernameContext);
+        return R.data(question);
+    }
+    @ApiOperation(
+            value = "User forgot the password. Verify the answer to the security question",
+            notes = "this interface verifies the answer the user puts",
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @LoginIgnore
+    @PostMapping("answer/check")
+    public R checkAnswer(@Validated @RequestBody CheckAnswerPO checkAnswerPO) {
+        CheckAnswerContext checkAnswerContext = userConverter.checkAnswerPO2CheckAnswerContext(checkAnswerPO);
+        String token = iUserService.checkAnswer(checkAnswerContext);
+        return R.data(token);
     }
 }

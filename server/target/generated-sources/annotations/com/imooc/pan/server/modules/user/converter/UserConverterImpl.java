@@ -1,8 +1,12 @@
 package com.imooc.pan.server.modules.user.converter;
 
+import com.imooc.pan.server.modules.user.context.CheckAnswerContext;
+import com.imooc.pan.server.modules.user.context.CheckUsernameContext;
 import com.imooc.pan.server.modules.user.context.UserLoginContext;
 import com.imooc.pan.server.modules.user.context.UserRegisterContext;
 import com.imooc.pan.server.modules.user.entity.driveHarborUser;
+import com.imooc.pan.server.modules.user.po.CheckAnswerPO;
+import com.imooc.pan.server.modules.user.po.CheckUsernamePO;
 import com.imooc.pan.server.modules.user.po.UserLoginPO;
 import com.imooc.pan.server.modules.user.po.UserRegisterPO;
 import javax.annotation.Generated;
@@ -10,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-10-26T14:04:29-0500",
+    date = "2023-10-26T16:24:05-0500",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 1.8.0_341 (Oracle Corporation)"
 )
 @Component
@@ -59,5 +63,33 @@ public class UserConverterImpl implements UserConverter {
         userLoginContext.setPassword( userLoginPO.getPassword() );
 
         return userLoginContext;
+    }
+
+    @Override
+    public CheckUsernameContext checkUsernamePO2CheckUsernameContext(CheckUsernamePO checkUsernamePO) {
+        if ( checkUsernamePO == null ) {
+            return null;
+        }
+
+        CheckUsernameContext checkUsernameContext = new CheckUsernameContext();
+
+        checkUsernameContext.setUsername( checkUsernamePO.getUsername() );
+
+        return checkUsernameContext;
+    }
+
+    @Override
+    public CheckAnswerContext checkAnswerPO2CheckAnswerContext(CheckAnswerPO checkAnswerPO) {
+        if ( checkAnswerPO == null ) {
+            return null;
+        }
+
+        CheckAnswerContext checkAnswerContext = new CheckAnswerContext();
+
+        checkAnswerContext.setUsername( checkAnswerPO.getUsername() );
+        checkAnswerContext.setQuestion( checkAnswerPO.getQuestion() );
+        checkAnswerContext.setAnswer( checkAnswerPO.getAnswer() );
+
+        return checkAnswerContext;
     }
 }

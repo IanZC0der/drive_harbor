@@ -1,5 +1,7 @@
 package com.imooc.pan.server.modules.user.service;
 
+import com.imooc.pan.server.modules.user.context.CheckAnswerContext;
+import com.imooc.pan.server.modules.user.context.CheckUsernameContext;
 import com.imooc.pan.server.modules.user.context.UserLoginContext;
 import com.imooc.pan.server.modules.user.context.UserRegisterContext;
 import com.imooc.pan.server.modules.user.entity.driveHarborUser;
@@ -15,4 +17,10 @@ public interface IUserService extends IService<driveHarborUser> {
     Long register(UserRegisterContext userRegisterContext);
 
     String login(UserLoginContext userLoginContext);
+
+    void exit(Long aLong);
+
+    String checkUsername(CheckUsernameContext checkUsernameContext);
+
+    String checkAnswer(CheckAnswerContext checkAnswerContext);
 }

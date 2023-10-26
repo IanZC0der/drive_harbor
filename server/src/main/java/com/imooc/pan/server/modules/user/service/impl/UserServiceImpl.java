@@ -12,12 +12,15 @@ import com.imooc.pan.server.modules.file.constants.FileConstants;
 import com.imooc.pan.server.modules.file.context.CreateFolderContext;
 import com.imooc.pan.server.modules.file.service.IUserFileService;
 import com.imooc.pan.server.modules.user.constants.UserConstants;
+import com.imooc.pan.server.modules.user.context.CheckAnswerContext;
+import com.imooc.pan.server.modules.user.context.CheckUsernameContext;
 import com.imooc.pan.server.modules.user.context.UserLoginContext;
 import com.imooc.pan.server.modules.user.context.UserRegisterContext;
 import com.imooc.pan.server.modules.user.converter.UserConverter;
 import com.imooc.pan.server.modules.user.entity.driveHarborUser;
 import com.imooc.pan.server.modules.user.service.IUserService;
 import com.imooc.pan.server.modules.user.mapper.driveHarborUserMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -71,6 +74,66 @@ public class UserServiceImpl extends ServiceImpl<driveHarborUserMapper, driveHar
         checkLoginInfo(userLoginContext);
         generateAndSaveAccessToken(userLoginContext);
         return userLoginContext.getAccessToken();
+    }
+
+    /**
+     * user logout
+     * clear the user's login cache
+     * @param userId
+     */
+    @Override
+    public void exit(Long userId) {
+        try {
+            Cache cache = cacheManager.getCache(CacheConstants.DRIVE_HARBOR_CACHE_NAME);
+            cache.evict(UserConstants.USER_LOGIN_PREFIX + userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new driveHarborBusinessException("User logout failed");
+        }
+    }
+
+    @Override
+    /**
+     * check username
+     */
+    public String checkUsername(CheckUsernameContext checkUsernameContext) {
+
+        String question = baseMapper.selectQuestionByUsername(checkUsernameContext.getUsername());
+        if (StringUtils.isBlank(question)) {
+            throw new driveHarborBusinessException("Username doesn't exist");
+        }
+        return question;
+    }
+
+    /**
+     * user forgot the password, check the answer
+     * @param checkAnswerContext
+     * @return
+     */
+    @Override
+    public String checkAnswer(CheckAnswerContext checkAnswerContext) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("username", checkAnswerContext.getUsername());
+        queryWrapper.eq("question", checkAnswerContext.getQuestion());
+        queryWrapper.eq("answer", checkAnswerContext.getAnswer());
+
+        int count = count(queryWrapper);
+        if (count == 0) {
+            throw new driveHarborBusinessException("Incorrect answer");
+        }
+
+        return generateCheckAnswerToken(checkAnswerContext);
+
+    }
+
+    /**
+     * generate the token when the verification of the answer to the security question is correct
+     * @param checkAnswerContext
+     * @return
+     */
+    private String generateCheckAnswerToken(CheckAnswerContext checkAnswerContext) {
+        String token = JwtUtil.generateToken(checkAnswerContext.getUsername(), UserConstants.FORGET_USERNAME, checkAnswerContext.getUsername(), UserConstants.FIVE_MINUTES_LONG);
+        return token;
     }
 
     private void checkLoginInfo(UserLoginContext userLoginContext) {
