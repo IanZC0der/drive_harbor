@@ -1,14 +1,8 @@
 package com.imooc.pan.server.modules.user.converter;
 
-import com.imooc.pan.server.modules.user.context.CheckAnswerContext;
-import com.imooc.pan.server.modules.user.context.CheckUsernameContext;
-import com.imooc.pan.server.modules.user.context.UserLoginContext;
-import com.imooc.pan.server.modules.user.context.UserRegisterContext;
+import com.imooc.pan.server.modules.user.context.*;
 import com.imooc.pan.server.modules.user.entity.driveHarborUser;
-import com.imooc.pan.server.modules.user.po.CheckAnswerPO;
-import com.imooc.pan.server.modules.user.po.CheckUsernamePO;
-import com.imooc.pan.server.modules.user.po.UserLoginPO;
-import com.imooc.pan.server.modules.user.po.UserRegisterPO;
+import com.imooc.pan.server.modules.user.po.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -24,4 +18,8 @@ public interface UserConverter {
     CheckUsernameContext checkUsernamePO2CheckUsernameContext(CheckUsernamePO checkUsernamePO);
 
     CheckAnswerContext checkAnswerPO2CheckAnswerContext(CheckAnswerPO checkAnswerPO);
+
+    ResetPasswordContext resetPasswordPO2ResetPasswordContext(ResetPasswordPO resetPasswordPO);
+
+    ChangePasswordContext changePasswordPO2ChangePasswordContext(ChangePasswordPO changePasswordPO);
 }

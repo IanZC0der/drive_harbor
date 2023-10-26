@@ -5,10 +5,7 @@ import com.imooc.pan.core.exception.driveHarborBusinessException;
 import com.imooc.pan.core.utils.JwtUtil;
 import com.imooc.pan.server.driveHarborServerLauncher;
 import com.imooc.pan.server.modules.user.constants.UserConstants;
-import com.imooc.pan.server.modules.user.context.CheckAnswerContext;
-import com.imooc.pan.server.modules.user.context.CheckUsernameContext;
-import com.imooc.pan.server.modules.user.context.UserLoginContext;
-import com.imooc.pan.server.modules.user.context.UserRegisterContext;
+import com.imooc.pan.server.modules.user.context.*;
 import com.imooc.pan.server.modules.user.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -191,6 +188,95 @@ public class UserTest {
 
         iUserService.checkAnswer(checkAnswerContext);
     }
+
+    /**
+     * 正常重置用户密码
+     */
+    @Test
+    public void resetPasswordSuccess() {
+        UserRegisterContext context = createUserRegisterContext();
+        Long register = iUserService.register(context);
+        Assert.isTrue(register.longValue() > 0L);
+
+        CheckAnswerContext checkAnswerContext = new CheckAnswerContext();
+        checkAnswerContext.setUsername(USERNAME);
+        checkAnswerContext.setQuestion(QUESTION);
+        checkAnswerContext.setAnswer(ANSWER);
+
+        String token = iUserService.checkAnswer(checkAnswerContext);
+
+        Assert.isTrue(StringUtils.isNotBlank(token));
+
+        ResetPasswordContext resetPasswordContext = new ResetPasswordContext();
+        resetPasswordContext.setUsername(USERNAME);
+        resetPasswordContext.setPassword(PASSWORD + "_change");
+        resetPasswordContext.setToken(token);
+
+        iUserService.resetPassword(resetPasswordContext);
+    }
+
+    /**
+     * reset passwod failed. token error
+     */
+    @Test(expected = driveHarborBusinessException.class)
+    public void resetPasswordTokenError() {
+        UserRegisterContext context = createUserRegisterContext();
+        Long register = iUserService.register(context);
+        Assert.isTrue(register.longValue() > 0L);
+
+        CheckAnswerContext checkAnswerContext = new CheckAnswerContext();
+        checkAnswerContext.setUsername(USERNAME);
+        checkAnswerContext.setQuestion(QUESTION);
+        checkAnswerContext.setAnswer(ANSWER);
+
+        String token = iUserService.checkAnswer(checkAnswerContext);
+
+        Assert.isTrue(StringUtils.isNotBlank(token));
+
+        ResetPasswordContext resetPasswordContext = new ResetPasswordContext();
+        resetPasswordContext.setUsername(USERNAME);
+        resetPasswordContext.setPassword(PASSWORD + "_change");
+        resetPasswordContext.setToken(token + "_change");
+
+        iUserService.resetPassword(resetPasswordContext);
+    }
+
+    /**
+     * test updating the password with normal workflow
+     */
+    @Test
+    public void changePasswordSuccess() {
+        UserRegisterContext context = createUserRegisterContext();
+        Long register = iUserService.register(context);
+        Assert.isTrue(register.longValue() > 0L);
+
+        ChangePasswordContext changePasswordContext = new ChangePasswordContext();
+
+        changePasswordContext.setUserId(register);
+        changePasswordContext.setOldPassword(PASSWORD);
+        changePasswordContext.setNewPassword(PASSWORD + "_change");
+
+        iUserService.changePassword(changePasswordContext);
+    }
+
+    /**
+     * 修改密码失败-旧密码错误
+     */
+    @Test(expected = driveHarborBusinessException.class)
+    public void changePasswordFailByWrongOldPassword() {
+        UserRegisterContext context = createUserRegisterContext();
+        Long register = iUserService.register(context);
+        Assert.isTrue(register.longValue() > 0L);
+
+        ChangePasswordContext changePasswordContext = new ChangePasswordContext();
+
+        changePasswordContext.setUserId(register);
+        changePasswordContext.setOldPassword(PASSWORD + "_change");
+        changePasswordContext.setNewPassword(PASSWORD + "_change");
+
+        iUserService.changePassword(changePasswordContext);
+    }
+
 
 
     private final static String USERNAME = "ian";

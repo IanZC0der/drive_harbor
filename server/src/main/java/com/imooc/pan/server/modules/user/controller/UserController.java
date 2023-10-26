@@ -4,15 +4,9 @@ import com.imooc.pan.core.response.R;
 import com.imooc.pan.core.utils.IdUtil;
 import com.imooc.pan.server.common.annotation.LoginIgnore;
 import com.imooc.pan.server.common.utils.UserIdUtil;
-import com.imooc.pan.server.modules.user.context.CheckAnswerContext;
-import com.imooc.pan.server.modules.user.context.CheckUsernameContext;
-import com.imooc.pan.server.modules.user.context.UserLoginContext;
-import com.imooc.pan.server.modules.user.context.UserRegisterContext;
+import com.imooc.pan.server.modules.user.context.*;
 import com.imooc.pan.server.modules.user.converter.UserConverter;
-import com.imooc.pan.server.modules.user.po.CheckAnswerPO;
-import com.imooc.pan.server.modules.user.po.CheckUsernamePO;
-import com.imooc.pan.server.modules.user.po.UserLoginPO;
-import com.imooc.pan.server.modules.user.po.UserRegisterPO;
+import com.imooc.pan.server.modules.user.po.*;
 import com.imooc.pan.server.modules.user.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -100,4 +94,33 @@ public class UserController {
         String token = iUserService.checkAnswer(checkAnswerContext);
         return R.data(token);
     }
+
+    @ApiOperation(
+            value = "User forgot the password. Reset the password",
+            notes = "this interface provides the functionality of resetting the password",
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @PostMapping("password/reset")
+    @LoginIgnore
+    public R resetPassword(@Validated @RequestBody ResetPasswordPO resetPasswordPO) {
+        ResetPasswordContext resetPasswordContext = userConverter.resetPasswordPO2ResetPasswordContext(resetPasswordPO);
+        iUserService.resetPassword(resetPasswordContext);
+        return R.success();
+    }
+
+    @ApiOperation(
+            value = "user updates the password",
+            notes = "this interface provides the functionality of updating the password",
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @PostMapping("password/change")
+    public R changePassword(@Validated @RequestBody ChangePasswordPO changePasswordPO) {
+        ChangePasswordContext changePasswordContext = userConverter.changePasswordPO2ChangePasswordContext(changePasswordPO);
+        changePasswordContext.setUserId(UserIdUtil.get());
+        iUserService.changePassword(changePasswordContext);
+        return R.success();
+    }
+
 }

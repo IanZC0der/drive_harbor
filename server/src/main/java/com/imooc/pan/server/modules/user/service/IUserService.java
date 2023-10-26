@@ -1,9 +1,6 @@
 package com.imooc.pan.server.modules.user.service;
 
-import com.imooc.pan.server.modules.user.context.CheckAnswerContext;
-import com.imooc.pan.server.modules.user.context.CheckUsernameContext;
-import com.imooc.pan.server.modules.user.context.UserLoginContext;
-import com.imooc.pan.server.modules.user.context.UserRegisterContext;
+import com.imooc.pan.server.modules.user.context.*;
 import com.imooc.pan.server.modules.user.entity.driveHarborUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -23,4 +20,8 @@ public interface IUserService extends IService<driveHarborUser> {
     String checkUsername(CheckUsernameContext checkUsernameContext);
 
     String checkAnswer(CheckAnswerContext checkAnswerContext);
+
+    void resetPassword(ResetPasswordContext resetPasswordContext);
+
+    void changePassword(ChangePasswordContext changePasswordContext);
 }

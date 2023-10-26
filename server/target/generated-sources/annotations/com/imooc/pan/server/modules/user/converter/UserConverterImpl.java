@@ -1,12 +1,16 @@
 package com.imooc.pan.server.modules.user.converter;
 
+import com.imooc.pan.server.modules.user.context.ChangePasswordContext;
 import com.imooc.pan.server.modules.user.context.CheckAnswerContext;
 import com.imooc.pan.server.modules.user.context.CheckUsernameContext;
+import com.imooc.pan.server.modules.user.context.ResetPasswordContext;
 import com.imooc.pan.server.modules.user.context.UserLoginContext;
 import com.imooc.pan.server.modules.user.context.UserRegisterContext;
 import com.imooc.pan.server.modules.user.entity.driveHarborUser;
+import com.imooc.pan.server.modules.user.po.ChangePasswordPO;
 import com.imooc.pan.server.modules.user.po.CheckAnswerPO;
 import com.imooc.pan.server.modules.user.po.CheckUsernamePO;
+import com.imooc.pan.server.modules.user.po.ResetPasswordPO;
 import com.imooc.pan.server.modules.user.po.UserLoginPO;
 import com.imooc.pan.server.modules.user.po.UserRegisterPO;
 import javax.annotation.Generated;
@@ -14,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-10-26T16:24:05-0500",
+    date = "2023-10-26T17:33:07-0500",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 1.8.0_341 (Oracle Corporation)"
 )
 @Component
@@ -91,5 +95,34 @@ public class UserConverterImpl implements UserConverter {
         checkAnswerContext.setAnswer( checkAnswerPO.getAnswer() );
 
         return checkAnswerContext;
+    }
+
+    @Override
+    public ResetPasswordContext resetPasswordPO2ResetPasswordContext(ResetPasswordPO resetPasswordPO) {
+        if ( resetPasswordPO == null ) {
+            return null;
+        }
+
+        ResetPasswordContext resetPasswordContext = new ResetPasswordContext();
+
+        resetPasswordContext.setUsername( resetPasswordPO.getUsername() );
+        resetPasswordContext.setPassword( resetPasswordPO.getPassword() );
+        resetPasswordContext.setToken( resetPasswordPO.getToken() );
+
+        return resetPasswordContext;
+    }
+
+    @Override
+    public ChangePasswordContext changePasswordPO2ChangePasswordContext(ChangePasswordPO changePasswordPO) {
+        if ( changePasswordPO == null ) {
+            return null;
+        }
+
+        ChangePasswordContext changePasswordContext = new ChangePasswordContext();
+
+        changePasswordContext.setOldPassword( changePasswordPO.getOldPassword() );
+        changePasswordContext.setNewPassword( changePasswordPO.getNewPassword() );
+
+        return changePasswordContext;
     }
 }

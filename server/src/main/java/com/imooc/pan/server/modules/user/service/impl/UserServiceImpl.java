@@ -12,10 +12,7 @@ import com.imooc.pan.server.modules.file.constants.FileConstants;
 import com.imooc.pan.server.modules.file.context.CreateFolderContext;
 import com.imooc.pan.server.modules.file.service.IUserFileService;
 import com.imooc.pan.server.modules.user.constants.UserConstants;
-import com.imooc.pan.server.modules.user.context.CheckAnswerContext;
-import com.imooc.pan.server.modules.user.context.CheckUsernameContext;
-import com.imooc.pan.server.modules.user.context.UserLoginContext;
-import com.imooc.pan.server.modules.user.context.UserRegisterContext;
+import com.imooc.pan.server.modules.user.context.*;
 import com.imooc.pan.server.modules.user.converter.UserConverter;
 import com.imooc.pan.server.modules.user.entity.driveHarborUser;
 import com.imooc.pan.server.modules.user.service.IUserService;
@@ -126,6 +123,70 @@ public class UserServiceImpl extends ServiceImpl<driveHarborUserMapper, driveHar
 
     }
 
+    @Override
+    public void resetPassword(ResetPasswordContext resetPasswordContext) {
+        checkForgetPasswordToken(resetPasswordContext);
+        checkAndResetUserPassword(resetPasswordContext);
+    }
+
+    /**
+     * user updates the password
+     * @param changePasswordContext
+     */
+    @Override
+    public void changePassword(ChangePasswordContext changePasswordContext) {
+        checkOldPassword(changePasswordContext);
+        doChangePassword(changePasswordContext);
+        exitLoginStatus(changePasswordContext);
+    }
+
+
+    /**
+     * check old password
+     * @param changePasswordContext
+     */
+    private void checkOldPassword(ChangePasswordContext changePasswordContext) {
+        Long userId = changePasswordContext.getUserId();
+        String oldPassword = changePasswordContext.getOldPassword();
+
+        driveHarborUser entity = getById(userId);
+        if (Objects.isNull(entity)) {
+            throw new driveHarborBusinessException("User doesn't exist");
+        }
+        changePasswordContext.setEntity(entity);
+
+        String encOldPassword = PasswordUtil.encryptPassword(entity.getSalt(), oldPassword);
+        String dbOldPassword = entity.getPassword();
+        if (!Objects.equals(encOldPassword, dbOldPassword)) {
+            throw new driveHarborBusinessException("incorrect old password");
+        }
+    }
+
+    /**
+     * change the password after verifying the old password
+     * @param changePasswordContext
+     */
+    private void doChangePassword(ChangePasswordContext changePasswordContext) {
+        String newPassword = changePasswordContext.getNewPassword();
+        driveHarborUser entity = changePasswordContext.getEntity();
+        String salt = entity.getSalt();
+
+        String encNewPassword = PasswordUtil.encryptPassword(salt, newPassword);
+
+        entity.setPassword(encNewPassword);
+
+        if (!updateById(entity)) {
+            throw new driveHarborBusinessException("failed to change the password");
+        }
+    }
+
+    /**
+     * exit login status after updating the password
+     * @param changePasswordContext
+     */
+    private void exitLoginStatus(ChangePasswordContext changePasswordContext) {
+        exit(changePasswordContext.getUserId());
+    }
     /**
      * generate the token when the verification of the answer to the security question is correct
      * @param checkAnswerContext
@@ -136,6 +197,44 @@ public class UserServiceImpl extends ServiceImpl<driveHarborUserMapper, driveHar
         return token;
     }
 
+    /**
+     * Verify user info and reset the password
+     *
+     * @param resetPasswordContext
+     */
+    private void checkAndResetUserPassword(ResetPasswordContext resetPasswordContext) {
+        String username = resetPasswordContext.getUsername();
+        String password = resetPasswordContext.getPassword();
+        driveHarborUser entity = getDriveHarborUserByUsername(username);
+        if (Objects.isNull(entity)) {
+            throw new driveHarborBusinessException("user doesn't exist");
+        }
+
+        String newDbPassword = PasswordUtil.encryptPassword(entity.getSalt(), password);
+        entity.setPassword(newDbPassword);
+        entity.setUpdateTime(new Date());
+
+        if (!updateById(entity)) {
+            throw new driveHarborBusinessException("Password resetting failed");
+        }
+    }
+
+    /**
+     * Validate the token for resetting password
+     *
+     * @param resetPasswordContext
+     */
+    private void checkForgetPasswordToken(ResetPasswordContext resetPasswordContext) {
+        String token = resetPasswordContext.getToken();
+        Object value = JwtUtil.analyzeToken(token, UserConstants.FORGET_USERNAME);
+        if (Objects.isNull(value)) {
+            throw new driveHarborBusinessException(ResponseCode.TOKEN_EXPIRE);
+        }
+        String tokenUsername = String.valueOf(value);
+        if (!Objects.equals(tokenUsername, resetPasswordContext.getUsername())) {
+            throw new driveHarborBusinessException("token error");
+        }
+    }
     private void checkLoginInfo(UserLoginContext userLoginContext) {
         String username = userLoginContext.getUsername();
         String password = userLoginContext.getPassword();
