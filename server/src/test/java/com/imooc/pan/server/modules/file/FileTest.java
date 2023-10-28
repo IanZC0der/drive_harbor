@@ -17,6 +17,7 @@ import com.imooc.pan.server.modules.file.service.IFileChunkService;
 import com.imooc.pan.server.modules.file.service.IFileService;
 import com.imooc.pan.server.modules.file.service.IUserFileService;
 import com.imooc.pan.server.modules.file.vo.DriveHarborUserFileVO;
+import com.imooc.pan.server.modules.file.vo.FolderTreeNodeVO;
 import com.imooc.pan.server.modules.file.vo.UploadedChunksVO;
 import com.imooc.pan.server.modules.user.context.UserLoginContext;
 import com.imooc.pan.server.modules.user.context.UserRegisterContext;
@@ -493,6 +494,43 @@ public class FileTest {
         }
 
     }
+
+    /**
+     * test query folder tree
+     */
+    @Test
+    public void getFolderTreeNodeVOListTest() {
+
+        Long userId = register();
+        UserInfoVO userInfoVO = info(userId);
+
+        CreateFolderContext context = new CreateFolderContext();
+        context.setParentId(userInfoVO.getRootFileId());
+        context.setUserId(userId);
+        context.setFolderName("folder-name-1");
+
+        Long fileId = iUserFileService.createFolder(context);
+        Assert.notNull(fileId);
+
+        context.setFolderName("folder-name-2");
+
+        fileId = iUserFileService.createFolder(context);
+        Assert.notNull(fileId);
+
+        context.setFolderName("folder-name-2-1");
+        context.setParentId(fileId);
+
+        iUserFileService.createFolder(context);
+        Assert.notNull(fileId);
+
+        QueryFolderTreeContext queryFolderTreeContext = new QueryFolderTreeContext();
+        queryFolderTreeContext.setUserId(userId);
+        List<FolderTreeNodeVO> folderTree = iUserFileService.getFolderTree(queryFolderTreeContext);
+
+        Assert.isTrue(folderTree.size() == 1);
+        folderTree.stream().forEach(FolderTreeNodeVO::print);
+    }
+
 
     /**
      * generate file entity

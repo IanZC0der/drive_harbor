@@ -1,9 +1,6 @@
 package com.imooc.pan.storage.engine.core;
 
-import com.imooc.pan.storage.engine.core.context.DeleteFileContext;
-import com.imooc.pan.storage.engine.core.context.MergeFileContext;
-import com.imooc.pan.storage.engine.core.context.StoreFileChunkContext;
-import com.imooc.pan.storage.engine.core.context.StoreFileContext;
+import com.imooc.pan.storage.engine.core.context.*;
 
 import java.io.IOException;
 
@@ -38,6 +35,14 @@ public interface StorageEngine {
      * @throws IOException
      */
     void mergeFile(MergeFileContext context) throws IOException;
+
+    /**
+     * read file content and write it to the output stream
+     *
+     * @param context
+     * @throws IOException
+     */
+    void realFile(ReadFileContext context) throws IOException;
 
 
 }

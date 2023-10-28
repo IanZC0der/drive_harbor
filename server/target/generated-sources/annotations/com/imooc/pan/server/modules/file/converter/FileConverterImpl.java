@@ -11,6 +11,7 @@ import com.imooc.pan.server.modules.file.context.FileUploadContext;
 import com.imooc.pan.server.modules.file.context.QueryUploadedChunksContext;
 import com.imooc.pan.server.modules.file.context.SecUploadFileContext;
 import com.imooc.pan.server.modules.file.context.UpdateFilenameContext;
+import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
 import com.imooc.pan.server.modules.file.po.CreateFolderPO;
 import com.imooc.pan.server.modules.file.po.DeleteFilePO;
 import com.imooc.pan.server.modules.file.po.FileChunkMergePO;
@@ -19,13 +20,14 @@ import com.imooc.pan.server.modules.file.po.FileUploadPO;
 import com.imooc.pan.server.modules.file.po.QueryUploadedChunksPO;
 import com.imooc.pan.server.modules.file.po.SecUploadFilePO;
 import com.imooc.pan.server.modules.file.po.UpdateFilenamePO;
+import com.imooc.pan.server.modules.file.vo.FolderTreeNodeVO;
 import com.imooc.pan.storage.engine.core.context.StoreFileChunkContext;
 import javax.annotation.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-10-28T13:21:23-0500",
+    date = "2023-10-28T16:24:19-0500",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 1.8.0_341 (Oracle Corporation)"
 )
 @Component
@@ -238,5 +240,22 @@ public class FileConverterImpl implements FileConverter {
         fileChunkMergeAndSaveContext.setRecord( context.getRecord() );
 
         return fileChunkMergeAndSaveContext;
+    }
+
+    @Override
+    public FolderTreeNodeVO driveHarborUserFile2FolderTreeNodeVO(driveHarborUserFile record) {
+        if ( record == null ) {
+            return null;
+        }
+
+        FolderTreeNodeVO folderTreeNodeVO = new FolderTreeNodeVO();
+
+        folderTreeNodeVO.setLabel( record.getFileName() );
+        folderTreeNodeVO.setId( record.getFileId() );
+        folderTreeNodeVO.setParentId( record.getParentId() );
+
+        folderTreeNodeVO.setChildren( com.google.common.collect.Lists.newArrayList() );
+
+        return folderTreeNodeVO;
     }
 }

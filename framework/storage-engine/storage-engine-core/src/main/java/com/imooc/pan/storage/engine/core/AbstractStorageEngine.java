@@ -2,10 +2,7 @@ package com.imooc.pan.storage.engine.core;
 
 import cn.hutool.core.lang.Assert;
 import com.imooc.pan.core.exception.driveHarborBusinessException;
-import com.imooc.pan.storage.engine.core.context.DeleteFileContext;
-import com.imooc.pan.storage.engine.core.context.MergeFileContext;
-import com.imooc.pan.storage.engine.core.context.StoreFileChunkContext;
-import com.imooc.pan.storage.engine.core.context.StoreFileContext;
+import com.imooc.pan.storage.engine.core.context.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -112,6 +109,18 @@ public abstract class AbstractStorageEngine implements StorageEngine{
     }
 
     /**
+     * check the context
+     * read file
+     * @param context
+     * @throws IOException
+     */
+    @Override
+    public void realFile(ReadFileContext context) throws IOException {
+        checkReadFileContext(context);
+        doReadFile(context);
+    }
+
+    /**
      * merge file
      * implemented by children class
      * @param context
@@ -123,10 +132,10 @@ public abstract class AbstractStorageEngine implements StorageEngine{
      * @param context
      */
     private void checkMergeFileContext(MergeFileContext context) {
-        Assert.notBlank(context.getFilename(), "文件名称不能为空");
-        Assert.notBlank(context.getIdentifier(), "文件唯一标识不能为空");
-        Assert.notNull(context.getUserId(), "当前登录用户的ID不能为空");
-        Assert.notEmpty(context.getRealPathList(), "文件分片列表不能为空");
+        Assert.notBlank(context.getFilename(), "File name cannot be null.");
+        Assert.notBlank(context.getIdentifier(), "Identifier cannot be null.");
+        Assert.notNull(context.getUserId(), "user ID cannot be null.");
+        Assert.notEmpty(context.getRealPathList(), "Chunks read path list cannot be null.");
     }
     /**
      * verify the file chunk context
@@ -143,4 +152,22 @@ public abstract class AbstractStorageEngine implements StorageEngine{
         Assert.notNull(context.getUserId(), "user ID cannot be null.");
 
     }
+
+    /**
+     * check read file context
+     *
+     * @param context
+     */
+    private void checkReadFileContext(ReadFileContext context) {
+        Assert.notBlank(context.getRealPath(), "Real path cannot be null.");
+        Assert.notNull(context.getOutputStream(), "Output stream cannot be null.");
+    }
+
+    /**
+     * read file content and write it to the output stream
+     * implemented by the children classes
+     *
+     * @param context
+     */
+    protected abstract void doReadFile(ReadFileContext context) throws IOException;
 }

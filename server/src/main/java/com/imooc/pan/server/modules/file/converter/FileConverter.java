@@ -1,7 +1,10 @@
 package com.imooc.pan.server.modules.file.converter;
 
 import com.imooc.pan.server.modules.file.context.*;
+import com.imooc.pan.server.modules.file.entity.driveHarborFile;
+import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
 import com.imooc.pan.server.modules.file.po.*;
+import com.imooc.pan.server.modules.file.vo.FolderTreeNodeVO;
 import com.imooc.pan.storage.engine.core.context.StoreFileChunkContext;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -50,4 +53,9 @@ public interface FileConverter {
     FileChunkMergeContext fileChunkMergePO2FileChunkMergeContext(FileChunkMergePO fileChunkMergePO);
 
     FileChunkMergeAndSaveContext fileChunkMergeContext2FileChunkMergeAndSaveContext(FileChunkMergeContext context);
+
+    @Mapping(target = "label", source = "record.fileName")
+    @Mapping(target = "id", source = "record.fileId")
+    @Mapping(target = "children", expression = "java(com.google.common.collect.Lists.newArrayList())")
+    FolderTreeNodeVO driveHarborUserFile2FolderTreeNodeVO(driveHarborUserFile record);
 }

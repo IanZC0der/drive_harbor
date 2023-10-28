@@ -5,6 +5,7 @@ import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.pan.server.modules.file.vo.DriveHarborUserFileVO;
 import com.imooc.pan.server.modules.file.vo.FileChunkUploadVO;
+import com.imooc.pan.server.modules.file.vo.FolderTreeNodeVO;
 import com.imooc.pan.server.modules.file.vo.UploadedChunksVO;
 
 import java.util.List;
@@ -57,4 +58,10 @@ public interface IUserFileService extends IService<driveHarborUserFile> {
     UploadedChunksVO getUploadedChunks(QueryUploadedChunksContext context);
 
     void mergeFile(FileChunkMergeContext context);
+
+    void download(FileDownloadContext context);
+
+    void preview(FilePreviewContext context);
+
+    List<FolderTreeNodeVO> getFolderTree(QueryFolderTreeContext context);
 }

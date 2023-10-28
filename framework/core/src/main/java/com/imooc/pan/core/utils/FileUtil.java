@@ -6,13 +6,11 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.activation.MimetypesFileTypeMap;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -168,5 +166,23 @@ public class FileUtil {
      */
     public static void appendWrite(Path target, Path source) throws IOException{
         Files.write(target, Files.readAllBytes(source), StandardOpenOption.APPEND);
+    }
+
+    /**
+     * apply the transfer-to method to write file to the output stream
+     * @param fileInputStream
+     * @param outputStream
+     * @param length
+     * @throws IOException
+     */
+    public static void writeFile2OutputStream(FileInputStream fileInputStream, OutputStream outputStream, long length) throws IOException{
+        FileChannel fileChannel = fileInputStream.getChannel();
+        WritableByteChannel writableByteChannel = Channels.newChannel(outputStream);
+        fileChannel.transferTo(driveHarborConstants.ZERO_LONG, length, writableByteChannel);
+        outputStream.flush();
+        fileInputStream.close();
+        outputStream.close();
+        fileChannel.close();
+        writableByteChannel.close();
     }
 }

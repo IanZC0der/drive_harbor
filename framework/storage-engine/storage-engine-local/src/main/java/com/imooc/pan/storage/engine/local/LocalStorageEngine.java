@@ -1,14 +1,12 @@
 package com.imooc.pan.storage.engine.local;
 import com.imooc.pan.core.utils.FileUtil;
-import com.imooc.pan.storage.engine.core.context.DeleteFileContext;
-import com.imooc.pan.storage.engine.core.context.MergeFileContext;
-import com.imooc.pan.storage.engine.core.context.StoreFileChunkContext;
-import com.imooc.pan.storage.engine.core.context.StoreFileContext;
+import com.imooc.pan.storage.engine.core.context.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.imooc.pan.storage.engine.core.AbstractStorageEngine;
 import com.imooc.pan.storage.engine.local.config.*;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.File;
 import java.nio.file.Paths;
@@ -64,6 +62,12 @@ public class LocalStorageEngine extends AbstractStorageEngine {
         }
         FileUtil.deleteFiles(chunkPaths);
         context.setRealPath(realFilePath);
+    }
+
+    @Override
+    protected void doReadFile(ReadFileContext context) throws IOException {
+        File file = new File(context.getRealPath());
+        FileUtil.writeFile2OutputStream(new FileInputStream(file), context.getOutputStream(), file.length());
     }
 
 }

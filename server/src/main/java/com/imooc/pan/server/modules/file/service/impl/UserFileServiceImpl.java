@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import com.imooc.pan.core.constants.driveHarborConstants;
 import com.imooc.pan.core.exception.driveHarborBusinessException;
 import com.imooc.pan.core.utils.FileUtil;
 import com.imooc.pan.server.common.event.file.DeleteFileEvent;
+import com.imooc.pan.server.common.utils.HttpUtil;
 import com.imooc.pan.server.modules.file.context.*;
 import com.imooc.pan.server.modules.file.converter.FileConverter;
 import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
@@ -21,21 +23,26 @@ import com.imooc.pan.server.modules.file.service.IUserFileService;
 import com.imooc.pan.server.modules.file.mapper.driverHarborUserFileMapper;
 import com.imooc.pan.server.modules.file.vo.DriveHarborUserFileVO;
 import com.imooc.pan.server.modules.file.vo.FileChunkUploadVO;
+import com.imooc.pan.server.modules.file.vo.FolderTreeNodeVO;
 import com.imooc.pan.server.modules.file.vo.UploadedChunksVO;
+import com.imooc.pan.storage.engine.core.AbstractStorageEngine;
+import com.imooc.pan.storage.engine.core.StorageEngine;
+import com.imooc.pan.storage.engine.core.context.ReadFileContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import com.imooc.pan.core.utils.IdUtil;
 import com.imooc.pan.server.modules.file.constants.FileConstants;
 import com.imooc.pan.server.modules.file.entity.driveHarborFile;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -56,6 +63,8 @@ public class UserFileServiceImpl extends ServiceImpl<driverHarborUserFileMapper,
 
     @Autowired
     private IFileChunkService iFileChunkService;
+    @Autowired
+    private StorageEngine storageEngine;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -204,6 +213,198 @@ public class UserFileServiceImpl extends ServiceImpl<driverHarborUserFileMapper,
                 context.getRecord().getFileId(),
                 context.getUserId(),
                 context.getRecord().getFileSizeDesc());
+
+    }
+
+    /**
+     * 1. check: file exists, the file belongs to the current user
+     * 2. check if it's a folder
+     * 3. download
+     * @param context
+     */
+    @Override
+    public void download(FileDownloadContext context) {
+        driveHarborUserFile record = getById(context.getFileId());
+        checkOperatePermission(record, context.getUserId());
+        if (checkIsFolder(record)) {
+            throw new driveHarborBusinessException("Folder cannot be downloaded.");
+        }
+        doDownload(record, context.getResponse());
+    }
+
+    /**
+     * 1. check: file exists, the file belongs to the current user
+     * 2. check if it's a folder
+     * 3. preview
+     * @param context
+     */
+    @Override
+    public void preview(FilePreviewContext context) {
+        driveHarborUserFile record = getById(context.getFileId());
+        checkOperatePermission(record, context.getUserId());
+        if (checkIsFolder(record)) {
+            throw new driveHarborBusinessException("Folder cannot be previewed.");
+        }
+        doPreview(record, context.getResponse());
+    }
+
+    /**
+     * query folder tree: non recursive
+     * 1. query the folder list of this user
+     * 2. assemble the folder tree in the buffer
+     *
+     * @param context
+     * @return
+     */
+    @Override
+    public List<FolderTreeNodeVO> getFolderTree(QueryFolderTreeContext context) {
+        List<driveHarborUserFile> folderRecords = queryFolderRecords(context.getUserId());
+        List<FolderTreeNodeVO> result = assembleFolderTreeNodeVOList(folderRecords);
+        return result;
+
+    }
+
+    /**
+     * assemble tree node list
+     * @param folderRecords
+     * @return
+     */
+    private List<FolderTreeNodeVO> assembleFolderTreeNodeVOList(List<driveHarborUserFile> folderRecords) {
+        if (CollectionUtils.isEmpty(folderRecords)) {
+            return Lists.newArrayList();
+        }
+        List<FolderTreeNodeVO> mappedFolderTreeNodeVOList = folderRecords.stream().map(fileConverter::driveHarborUserFile2FolderTreeNodeVO).collect(Collectors.toList());
+        Map<Long, List<FolderTreeNodeVO>> mappedFolderTreeNodeVOMap = mappedFolderTreeNodeVOList.stream().collect(Collectors.groupingBy(FolderTreeNodeVO::getParentId));
+        for (FolderTreeNodeVO node : mappedFolderTreeNodeVOList) {
+            List<FolderTreeNodeVO> children = mappedFolderTreeNodeVOMap.get(node.getId());
+            if (CollectionUtils.isNotEmpty(children)) {
+                node.getChildren().addAll(children);
+            }
+        }
+        return mappedFolderTreeNodeVOList.stream().filter(node -> Objects.equals(node.getParentId(), FileConstants.TOP_PARENT_ID)).collect(Collectors.toList());
+    }
+
+    /**
+     * query all the folders
+     * @param userId
+     * @return
+     */
+    private List<driveHarborUserFile> queryFolderRecords(Long userId) {
+        QueryWrapper queryWrapper = Wrappers.query();
+        queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("folder_flag", FolderFlagEnum.YES.getCode());
+        queryWrapper.eq("del_flag", DelFlagEnum.NO.getCode());
+        return list(queryWrapper);
+    }
+
+    /**
+     * 1, lookup
+     * 2. add common response header
+     * 3. write to the output stream
+     * @param record
+     * @param response
+     */
+    private void doPreview(driveHarborUserFile record, HttpServletResponse response) {
+        driveHarborFile realFileRecord = iFileService.getById(record.getRealFileId());
+        if (Objects.isNull(realFileRecord)) {
+            throw new driveHarborBusinessException("File doesn't exist.");
+        }
+        addCommonResponseHeader(response, realFileRecord.getFilePreviewContentType());
+        realFile2OutputStream(realFileRecord.getRealPath(), response);
+    }
+
+    /**
+     * do download
+     * 1. look up the path
+     * 2. add cross-region common response header
+     * 3. read the content to the output stream
+     * @param record
+     * @param response
+     */
+    private void doDownload(driveHarborUserFile record, HttpServletResponse response) {
+        driveHarborFile realFileRecord = iFileService.getById(record.getRealFileId());
+        if (Objects.isNull(realFileRecord)) {
+            throw new driveHarborBusinessException("File doesn't exist.");
+        }
+        addCommonResponseHeader(response, MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        addDownloadAttribute(response, record, realFileRecord);
+        realFile2OutputStream(realFileRecord.getRealPath(), response);
+    }
+
+    /**
+     * add common response header
+     * @param response
+     * @param contentTypeValue
+     */
+    private void addCommonResponseHeader(HttpServletResponse response, String contentTypeValue) {
+        response.reset();
+        HttpUtil.addCorsResponseHeaders(response);
+        response.addHeader(FileConstants.CONTENT_TYPE_STR, contentTypeValue);
+        response.setContentType(contentTypeValue);
+    }
+
+    /**
+     * add download attributes
+     * @param response
+     * @param record
+     * @param realFileRecord
+     */
+    private void addDownloadAttribute(HttpServletResponse response, driveHarborUserFile record, driveHarborFile realFileRecord) {
+        try {
+            response.addHeader(FileConstants.CONTENT_DISPOSITION_STR,
+                    FileConstants.CONTENT_DISPOSITION_VALUE_PREFIX_STR + new String(record.getFileName().getBytes(FileConstants.GB2312_STR), FileConstants.IOS_8859_1_STR));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            throw new driveHarborBusinessException("Download failure.");
+        }
+        response.setContentLengthLong(Long.valueOf(realFileRecord.getFileSize()));
+    }
+
+    /**
+     * read file to the output stream
+     * storage engine reads the contents and write it to the output stream
+     * @param realPath
+     * @param response
+     */
+    private void realFile2OutputStream(String realPath, HttpServletResponse response) {
+        try {
+            ReadFileContext context = new ReadFileContext();
+            context.setRealPath(realPath);
+            context.setOutputStream(response.getOutputStream());
+            storageEngine.realFile(context);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new driveHarborBusinessException("Download failure.");
+        }
+    }
+
+    /**
+     * check to see if it's a folder
+     * folder cannot be downloaded
+     * @param record
+     * @return
+     */
+    private boolean checkIsFolder(driveHarborUserFile record) {
+        if (Objects.isNull(record)) {
+            throw new driveHarborBusinessException("File doesn't exist.");
+        }
+        return FolderFlagEnum.YES.getCode().equals(record.getFolderFlag());
+    }
+
+    /**
+     * check permission
+     * 1. file exists
+     * 2. permission
+     * @param record
+     * @param userId
+     */
+    private void checkOperatePermission(driveHarborUserFile record, Long userId) {
+        if (Objects.isNull(record)) {
+            throw new driveHarborBusinessException("File doesn't exist.");
+        }
+        if (!record.getUserId().equals(userId)) {
+            throw new driveHarborBusinessException("No permission.");
+        }
 
     }
 

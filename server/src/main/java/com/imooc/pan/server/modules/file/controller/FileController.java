@@ -13,6 +13,7 @@ import com.imooc.pan.server.modules.file.po.*;
 import com.imooc.pan.server.modules.file.service.IUserFileService;
 import com.imooc.pan.server.modules.file.vo.DriveHarborUserFileVO;
 import com.imooc.pan.server.modules.file.vo.FileChunkUploadVO;
+import com.imooc.pan.server.modules.file.vo.FolderTreeNodeVO;
 import com.imooc.pan.server.modules.file.vo.UploadedChunksVO;
 import com.imooc.pan.server.modules.user.service.IUserService;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Objects;
@@ -176,5 +178,51 @@ public class FileController {
         FileChunkMergeContext context = fileConverter.fileChunkMergePO2FileChunkMergeContext(fileChunkMergePO);
         iUserFileService.mergeFile(context);
         return R.success();
+    }
+
+    @ApiOperation(
+            value = "File download",
+            notes = "该接口提供了文件下载的功能",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    @GetMapping("file/download")
+    public void download(@NotBlank(message = "Id cannot be blank") @RequestParam(value = "fileId", required = false) String fileId,
+                         HttpServletResponse response) {
+        FileDownloadContext context = new FileDownloadContext();
+        context.setFileId(IdUtil.decrypt(fileId));
+        context.setResponse(response);
+        context.setUserId(UserIdUtil.get());
+        iUserFileService.download(context);
+    }
+
+    @ApiOperation(
+            value = "File preview",
+            notes = "This interface provides the functionality of file preview",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    @GetMapping("file/preview")
+    public void preview(@NotBlank(message = "FileId cannot be null.") @RequestParam(value = "fileId", required = false) String fileId,
+                        HttpServletResponse response) {
+        FilePreviewContext context = new FilePreviewContext();
+        context.setFileId(IdUtil.decrypt(fileId));
+        context.setResponse(response);
+        context.setUserId(UserIdUtil.get());
+        iUserFileService.preview(context);
+    }
+
+    @ApiOperation(
+            value = "Folder tree query",
+            notes = "This interface provides the functionality of folder tree query",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @GetMapping("file/folder/tree")
+    public R<List<FolderTreeNodeVO>> getFolderTree() {
+        QueryFolderTreeContext context = new QueryFolderTreeContext();
+        context.setUserId(UserIdUtil.get());
+        List<FolderTreeNodeVO> result = iUserFileService.getFolderTree(context);
+        return R.data(result);
     }
 }
