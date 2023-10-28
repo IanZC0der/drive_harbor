@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 秒传文件接口上下文对象实体
+ * speed file uploading entity context
  */
 @Data
 public class SecUploadFileContext implements Serializable {
@@ -13,22 +13,22 @@ public class SecUploadFileContext implements Serializable {
     private static final long serialVersionUID = 865765374680289146L;
 
     /**
-     * 文件的父ID
+     * parent folder id
      */
     private Long parentId;
 
     /**
-     * 文件名称
+     * file name
      */
     private String filename;
 
     /**
-     * 文件的唯一标识
+     * file identifier
      */
     private String identifier;
 
     /**
-     * 当前登录用的ID
+     * user id
      */
     private Long userId;
 

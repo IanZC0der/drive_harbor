@@ -1,5 +1,6 @@
 package com.imooc.pan.server.modules.user.converter;
 
+import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
 import com.imooc.pan.server.modules.user.context.ChangePasswordContext;
 import com.imooc.pan.server.modules.user.context.CheckAnswerContext;
 import com.imooc.pan.server.modules.user.context.CheckUsernameContext;
@@ -13,12 +14,13 @@ import com.imooc.pan.server.modules.user.po.CheckUsernamePO;
 import com.imooc.pan.server.modules.user.po.ResetPasswordPO;
 import com.imooc.pan.server.modules.user.po.UserLoginPO;
 import com.imooc.pan.server.modules.user.po.UserRegisterPO;
+import com.imooc.pan.server.modules.user.vo.UserInfoVO;
 import javax.annotation.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-10-26T17:33:07-0500",
+    date = "2023-10-27T21:13:48-0500",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 1.8.0_341 (Oracle Corporation)"
 )
 @Component
@@ -124,5 +126,24 @@ public class UserConverterImpl implements UserConverter {
         changePasswordContext.setNewPassword( changePasswordPO.getNewPassword() );
 
         return changePasswordContext;
+    }
+
+    @Override
+    public UserInfoVO assembleUserInfoVO(driveHarborUser aUser, driveHarborUserFile aFile) {
+        if ( aUser == null && aFile == null ) {
+            return null;
+        }
+
+        UserInfoVO userInfoVO = new UserInfoVO();
+
+        if ( aUser != null ) {
+            userInfoVO.setUsername( aUser.getUsername() );
+        }
+        if ( aFile != null ) {
+            userInfoVO.setRootFileId( aFile.getFileId() );
+            userInfoVO.setRootFilename( aFile.getFileName() );
+        }
+
+        return userInfoVO;
     }
 }

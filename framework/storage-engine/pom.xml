@@ -8,6 +8,13 @@
         <artifactId>r-pan-framework</artifactId>
         <version>1.0</version>
     </parent>
+    <packaging>pom</packaging>
+    <modules>
+        <module>storage-engine-core</module>
+        <module>storage-engine-local</module>
+        <module>storage-engine-oss</module>
+        <module>storage-engine-fastdfs</module>
+    </modules>
 
     <artifactId>r-pan-storage-engine</artifactId>
 

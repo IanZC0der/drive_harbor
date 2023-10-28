@@ -8,13 +8,17 @@ import com.imooc.pan.core.exception.driveHarborBusinessException;
 import com.imooc.pan.core.utils.IdUtil;
 import com.imooc.pan.server.common.config.HarborServerConfig;
 import com.imooc.pan.server.modules.file.context.FileChunkSaveContext;
+import com.imooc.pan.server.modules.file.converter.FileConverter;
 import com.imooc.pan.server.modules.file.entity.driveHarborFileChunk;
 import com.imooc.pan.server.modules.file.enums.MergeFlagEnum;
 import com.imooc.pan.server.modules.file.service.IFileChunkService;
 import com.imooc.pan.server.modules.file.mapper.driveHarborFileChunkMapper;
+import com.imooc.pan.storage.engine.core.StorageEngine;
+import com.imooc.pan.storage.engine.core.context.StoreFileChunkContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -23,11 +27,17 @@ import java.util.Date;
 * @createDate 2023-10-23 21:04:43
 */
 @Service
-public class IFileChunkServiceImpl extends ServiceImpl<driveHarborFileChunkMapper, driveHarborFileChunk>
+public class FileChunkServiceImpl extends ServiceImpl<driveHarborFileChunkMapper, driveHarborFileChunk>
     implements IFileChunkService {
 
     @Autowired
     private HarborServerConfig config;
+
+    @Autowired
+    private FileConverter fileConverter;
+
+    @Autowired
+    private StorageEngine storageEngine;
 
     /**
      * 1. save the chunks and record
@@ -71,8 +81,17 @@ public class IFileChunkServiceImpl extends ServiceImpl<driveHarborFileChunkMappe
      * @param context
      */
     private void doStoreFileChunk(FileChunkSaveContext context) {
-
+        try {
+            StoreFileChunkContext storeFileChunkContext = fileConverter.fileChunkSaveContext2StoreFileChunkContext(context);
+            storeFileChunkContext.setInputStream(context.getFile().getInputStream());
+            storageEngine.storeChunk(storeFileChunkContext);
+            context.setRealPath(storeFileChunkContext.getRealPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new driveHarborBusinessException("Chunk upload failure");
+        }
     }
+
 
     private void doJudgeMergeFile(FileChunkSaveContext context) {
         QueryWrapper queryWrapper = Wrappers.query();

@@ -1,16 +1,13 @@
 package com.imooc.pan.server.modules.file.converter;
 
 import com.imooc.pan.server.modules.file.context.*;
-import com.imooc.pan.server.modules.file.entity.RPanUserFile;
 import com.imooc.pan.server.modules.file.po.*;
-import com.imooc.pan.server.modules.file.vo.FolderTreeNodeVO;
-import com.imooc.pan.server.modules.file.vo.RPanUserFileVO;
 import com.imooc.pan.storage.engine.core.context.StoreFileChunkContext;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 /**
- * 文件模块实体转化工具类
+ * entity converter
  */
 @Mapper(componentModel = "spring")
 public interface FileConverter {
@@ -53,12 +50,4 @@ public interface FileConverter {
     FileChunkMergeContext fileChunkMergePO2FileChunkMergeContext(FileChunkMergePO fileChunkMergePO);
 
     FileChunkMergeAndSaveContext fileChunkMergeContext2FileChunkMergeAndSaveContext(FileChunkMergeContext context);
-
-    @Mapping(target = "label", source = "record.filename")
-    @Mapping(target = "id", source = "record.fileId")
-    @Mapping(target = "children", expression = "java(com.google.common.collect.Lists.newArrayList())")
-    FolderTreeNodeVO rPanUserFile2FolderTreeNodeVO(RPanUserFile record);
-
-    RPanUserFileVO rPanUserFile2RPanUserFileVO(RPanUserFile record);
-
 }

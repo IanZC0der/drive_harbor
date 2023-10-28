@@ -8,16 +8,15 @@ import com.imooc.pan.server.modules.user.context.*;
 import com.imooc.pan.server.modules.user.converter.UserConverter;
 import com.imooc.pan.server.modules.user.po.*;
 import com.imooc.pan.server.modules.user.service.IUserService;
+import com.imooc.pan.server.modules.user.vo.UserInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.devtools.restart.ConditionalOnInitializedRestarter;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
 
@@ -121,6 +120,18 @@ public class UserController {
         changePasswordContext.setUserId(UserIdUtil.get());
         iUserService.changePassword(changePasswordContext);
         return R.success();
+    }
+
+    @ApiOperation(
+            value = "query the info of the user in the login status",
+            notes = "this interface provides the functionality of querying the info of the user",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    )
+    @GetMapping("/")
+    public R<UserInfoVO> info(){
+        UserInfoVO userInfoVO = iUserService.info(UserIdUtil.get());
+        return R.data(userInfoVO);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.imooc.pan.storage.engine.local.config;
 
-import com.imooc.pan.core.utils.FileUtils;
+import com.imooc.pan.core.utils.FileUtil;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 public class LocalStorageEngineConfig {
 
     /**
-     * 实际存放路径的前缀
+     * real file path
      */
-    private String rootFilePath = FileUtils.generateDefaultStoreFileRealPath();
+    private String rootFilePath = FileUtil.generateDefaultStoreFileRealPath();
 
     /**
-     * 实际存放文件分片的路径的前缀
+     * chunk file path
      */
-    private String rootFileChunkPath = FileUtils.generateDefaultStoreFileChunkRealPath();
+    private String rootFileChunkPath = FileUtil.generateDefaultStoreFileChunkRealPath();
 
 }

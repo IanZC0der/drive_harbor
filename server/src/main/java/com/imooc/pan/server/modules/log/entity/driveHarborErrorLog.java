@@ -25,37 +25,37 @@ public class driveHarborErrorLog implements Serializable {
      * log contents
      */
     @TableField(value = "log_content")
-    private String log_content;
+    private String logContent;
 
     /**
      * log status, 0: unaddressed, 1: addressed
      */
     @TableField(value = "log_status")
-    private Integer log_status;
+    private Integer logStatus;
 
     /**
      * creator
      */
     @TableField(value = "create_user")
-    private Long create_user;
+    private Long createUser;
 
     /**
      * create time
      */
     @TableField(value = "create_time")
-    private Date create_time;
+    private Date createTime;
 
     /**
      * updater
      */
     @TableField(value = "update_user")
-    private Long update_user;
+    private Long updateUser;
 
     /**
      * update time
      */
     @TableField(value = "update_time")
-    private Date update_time;
+    private Date updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

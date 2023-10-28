@@ -17,4 +17,6 @@ public interface FileConstants {
     String LEFT_PARENTHESES_STR = "(";
 
     String RIGHT_PARENTHESES_STR = ")";
+
+    String ALL_FILE_TYPE = "-1";
 }

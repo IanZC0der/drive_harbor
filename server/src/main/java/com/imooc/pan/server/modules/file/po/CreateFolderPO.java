@@ -7,18 +7,18 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
-@ApiModel(value = "创建文件夹参数实体")
+@ApiModel(value = "create folder params")
 @Data
 public class CreateFolderPO implements Serializable {
 
     private static final long serialVersionUID = 5475817231508440546L;
 
-    @ApiModelProperty(value = "加密的父文件夹ID", required = true)
-    @NotBlank(message = "父文件夹ID不能为空")
+    @ApiModelProperty(value = "encrypted parent folder id", required = true)
+    @NotBlank(message = "parent folder id cannot be blank")
     private String parentId;
 
-    @ApiModelProperty(value = "文件夹名称", required = true)
-    @NotBlank(message = "文件夹名称不能为空")
+    @ApiModelProperty(value = "folder name", required = true)
+    @NotBlank(message = "folder name cannot be blank")
     private String folderName;
 
 }

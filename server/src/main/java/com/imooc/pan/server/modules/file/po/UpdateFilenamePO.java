@@ -8,20 +8,20 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
- * 文件重命名参数对象
+ * rename file PO params
  */
 @Data
-@ApiModel(value = "文件重命名参数对象")
+@ApiModel(value = "rename file PO params")
 public class UpdateFilenamePO implements Serializable {
 
     private static final long serialVersionUID = -8138754986668154124L;
 
-    @ApiModelProperty(value = "更新的文件ID", required = true)
-    @NotBlank(message = "更新的文件ID不能为空")
+    @ApiModelProperty(value = "new file id", required = true)
+    @NotBlank(message = "new file id cannot be blank")
     private String fileId;
 
-    @ApiModelProperty(value = "新的文件名称", required = true)
-    @NotBlank(message = "新的文件名称不能为空")
+    @ApiModelProperty(value = "new file name", required = true)
+    @NotBlank(message = "new file name cannot be blank")
     private String newFilename;
 
 }

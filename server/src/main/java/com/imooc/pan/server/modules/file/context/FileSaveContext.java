@@ -1,49 +1,49 @@
 package com.imooc.pan.server.modules.file.context;
 
-import com.imooc.pan.server.modules.file.entity.RPanFile;
+import com.imooc.pan.server.modules.file.entity.driveHarborFile;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 
 /**
- * 保存单文件的上下文实体
+ * file save context
  */
 @Data
 public class FileSaveContext implements Serializable {
 
     /**
-     * 文件名称
+     * file name
      */
     private String filename;
 
     /**
-     * 文件唯一标识
+     * file identifier
      */
     private String identifier;
 
     /**
-     * 文件大小
+     * size
      */
     private Long totalSize;
 
     /**
-     * 要上传的文件实体
+     * file entity
      */
     private MultipartFile file;
 
     /**
-     * 当前登录的用户ID
+     * user id
      */
     private Long userId;
 
     /**
      * 实体文件记录
      */
-    private RPanFile record;
+    private driveHarborFile record;
 
     /**
-     * 文件上传的物理路径
+     * real path
      */
     private String realPath;
 

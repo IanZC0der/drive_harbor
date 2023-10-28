@@ -1,12 +1,12 @@
 package com.imooc.pan.server.modules.file.context;
 
-import com.imooc.pan.server.modules.file.entity.RPanFile;
+import com.imooc.pan.server.modules.file.entity.driveHarborFile;
 import lombok.Data;
 
 import java.io.Serializable;
 
 /**
- * 文件分片合并的上下文实体对象
+ * file chunk merge and save context
  */
 @Data
 public class FileChunkMergeAndSaveContext implements Serializable {
@@ -14,37 +14,37 @@ public class FileChunkMergeAndSaveContext implements Serializable {
     private static final long serialVersionUID = -3913020166000401092L;
 
     /**
-     * 文件名称
+     * file name
      */
     private String filename;
 
     /**
-     * 文件唯一标识
+     * identifier
      */
     private String identifier;
 
     /**
-     * 文件总大小
+     * file total size
      */
     private Long totalSize;
 
     /**
-     * 文件的父文件夹ID
+     * parent folder id
      */
     private Long parentId;
 
     /**
-     * 当前登录的用户ID
+     * user id
      */
     private Long userId;
 
     /**
-     * 物理文件记录
+     * file physical record
      */
-    private RPanFile record;
+    private driveHarborFile record;
 
     /**
-     * 文件合并之后存储的真实的物理路径
+     * real path after merging
      */
     private String realPath;
 

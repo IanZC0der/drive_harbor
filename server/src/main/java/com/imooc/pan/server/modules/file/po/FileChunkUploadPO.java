@@ -9,38 +9,38 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-@ApiModel("文件分片上传参数实体")
+@ApiModel("file chunk upload PO params")
 @Data
 public class FileChunkUploadPO implements Serializable {
 
     private static final long serialVersionUID = 8036267299049093753L;
 
-    @ApiModelProperty(value = "文件名称", required = true)
-    @NotBlank(message = "文件名称不能为空")
+    @ApiModelProperty(value = "file name", required = true)
+    @NotBlank(message = "File name cannot be null.")
     private String filename;
 
-    @ApiModelProperty(value = "文件唯一标识", required = true)
-    @NotBlank(message = "文件唯一标识不能为空")
+    @ApiModelProperty(value = "file identifier", required = true)
+    @NotBlank(message = "file identifier cannot be null.")
     private String identifier;
 
-    @ApiModelProperty(value = "总体的分片数", required = true)
-    @NotNull(message = "总体的分片数不能为空")
+    @ApiModelProperty(value = "total number of chunks", required = true)
+    @NotNull(message = "Number cannot be null.")
     private Integer totalChunks;
 
-    @ApiModelProperty(value = "当前分片的下标", required = true)
-    @NotNull(message = "当前分片的下标不能为空")
+    @ApiModelProperty(value = "chunk number", required = true)
+    @NotNull(message = "Chunk number cannot be null")
     private Integer chunkNumber;
 
-    @ApiModelProperty(value = "当前分片的大小", required = true)
-    @NotNull(message = "当前分片的大小不能为空")
+    @ApiModelProperty(value = "current chunk size", required = true)
+    @NotNull(message = "Size cannot be null")
     private Long currentChunkSize;
 
-    @ApiModelProperty(value = "文件总大小", required = true)
-    @NotNull(message = "文件总大小不能为空")
+    @ApiModelProperty(value = "total file size", required = true)
+    @NotNull(message = "Size cannot be null.")
     private Long totalSize;
 
-    @ApiModelProperty(value = "分片文件实体", required = true)
-    @NotNull(message = "分片文件实体不能为空")
+    @ApiModelProperty(value = "file chunk entity", required = true)
+    @NotNull(message = "Entity cannot be null")
     private MultipartFile file;
 
 }

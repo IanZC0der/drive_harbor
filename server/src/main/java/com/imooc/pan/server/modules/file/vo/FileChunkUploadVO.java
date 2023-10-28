@@ -6,13 +6,13 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-@ApiModel("文件分片上传的响应实体")
+@ApiModel("file chunk uploading responder entity")
 @Data
 public class FileChunkUploadVO implements Serializable {
 
     private static final long serialVersionUID = 7670192129580713809L;
 
-    @ApiModelProperty("是否需要合并文件 0 不需要 1 需要")
+    @ApiModelProperty("if merging is needed,0 for false, 1 for true")
     private Integer mergeFlag;
 
 }

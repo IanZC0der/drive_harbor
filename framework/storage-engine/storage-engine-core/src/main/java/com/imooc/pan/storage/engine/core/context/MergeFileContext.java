@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 合并文件上下文对象
+ * merge file context
  */
 @Data
 public class MergeFileContext implements Serializable {
@@ -14,27 +14,27 @@ public class MergeFileContext implements Serializable {
     private static final long serialVersionUID = -4164388478940590401L;
 
     /**
-     * 文件名称
+     * file name
      */
     private String filename;
 
     /**
-     * 文件唯一标识
+     * file identifier
      */
     private String identifier;
 
     /**
-     * 当前登录的用户ID
+     * user ID
      */
     private Long userId;
 
     /**
-     * 文件分片的真实存储路径集合
+     * real path list
      */
     private List<String> realPathList;
 
     /**
-     * 文件合并后的真实物理存储路径
+     * real path after merging
      */
     private String realPath;
 

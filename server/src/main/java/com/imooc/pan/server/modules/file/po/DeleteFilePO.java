@@ -7,14 +7,14 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
-@ApiModel(value = "批量删除文件入参对象实体")
+@ApiModel(value = "delete files params")
 @Data
 public class DeleteFilePO implements Serializable {
 
     private static final long serialVersionUID = 3098611201745909528L;
 
-    @ApiModelProperty(value = "要删除的文件ID，多个使用公用的分隔符分割", required = true)
-    @NotBlank(message = "请选择要删除的文件信息")
+    @ApiModelProperty(value = "ids of the files to be deleted, splited by public splitter", required = true)
+    @NotBlank(message = "Please select the file info to be deleted")
     private String fileIds;
 
 }

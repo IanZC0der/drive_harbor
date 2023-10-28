@@ -19,7 +19,7 @@ public class driveHarborFile implements Serializable {
      * file_id
      */
     @TableId(value = "file_id")
-    private Long file_id;
+    private Long fileId;
 
     /**
      * file_name
@@ -31,31 +31,31 @@ public class driveHarborFile implements Serializable {
      * file_path
      */
     @TableField(value = "real_path")
-    private String real_path;
+    private String realPath;
 
     /**
      * file_size
      */
     @TableField(value = "file_size")
-    private String file_size;
+    private String fileSize;
 
     /**
      * file_size_desc
      */
     @TableField(value = "file_size_desc")
-    private String file_size_desc;
+    private String fileSizeDesc;
 
     /**
      * file_suffix
      */
     @TableField(value = "file_suffix")
-    private String file_suffix;
+    private String fileSuffix;
 
     /**
      * file_preview_content_type
      */
     @TableField(value = "file_preview_content_type")
-    private String file_preview_content_type;
+    private String filePreviewContentType;
 
     /**
      * unique_identifier
@@ -67,13 +67,13 @@ public class driveHarborFile implements Serializable {
      * creator
      */
     @TableField(value = "create_user")
-    private Long create_user;
+    private Long createUser;
 
     /**
      * creation_time
      */
     @TableField(value = "create_time")
-    private Date create_time;
+    private Date createTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

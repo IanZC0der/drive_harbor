@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.Serializable;
 
 /**
- * 文件分片保存的上下文实体信息
+ * file chunk save context
  */
 @Data
 public class FileChunkSaveContext implements Serializable {
@@ -15,54 +15,55 @@ public class FileChunkSaveContext implements Serializable {
     private static final long serialVersionUID = 2958393596320065564L;
 
     /**
-     * 文件名称
+     * file name
      */
     private String filename;
 
     /**
-     * 文件唯一标识
+     * identifier
      */
     private String identifier;
 
     /**
-     * 总体的分片数
+     * total chunks
      */
     private Integer totalChunks;
 
     /**
-     * 当前分片下标
-     * 从1开始
+     * current chunk number
      */
     private Integer chunkNumber;
 
     /**
-     * 当前分片的大小
+     * chunk size
      */
     private Long currentChunkSize;
 
     /**
-     * 文件的总大小
+     * total size
      */
     private Long totalSize;
 
     /**
-     * 文件实体
+     * file entity
      */
     private MultipartFile file;
 
     /**
-     * 当前登录的用户ID
+     * user id
      */
     private Long userId;
 
+
     /**
-     * 文件合并标识
+     * merge flag enum
      */
     private MergeFlagEnum mergeFlagEnum = MergeFlagEnum.NOT_READY;
 
     /**
-     * 文件分片的真实存储路径
+     * path of the uploaded file
      */
     private String realPath;
+
 
 }

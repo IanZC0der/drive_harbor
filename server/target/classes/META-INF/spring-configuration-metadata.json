@@ -1,0 +1,24 @@
+{
+  "groups": [
+    {
+      "name": "com.imooc.pan.server",
+      "type": "com.imooc.pan.server.common.config.HarborServerConfig",
+      "sourceType": "com.imooc.pan.server.common.config.HarborServerConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.imooc.pan.server.chunk-file-expiration-days",
+      "type": "java.lang.Integer",
+      "description": "chunk file expiration days. chunk will be expired.",
+      "sourceType": "com.imooc.pan.server.common.config.HarborServerConfig"
+    },
+    {
+      "name": "com.imooc.pan.server.share-prefix",
+      "type": "java.lang.String",
+      "description": "share link prefix",
+      "sourceType": "com.imooc.pan.server.common.config.HarborServerConfig"
+    }
+  ],
+  "hints": []
+}

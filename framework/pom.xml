@@ -16,9 +16,10 @@
         <module>web</module>
         <module>swagger2</module>
         <module>orm</module>
-        <module>orm/mybatis-plus</module>
+<!--        <module>orm/mybatis-plus</module>-->
         <module>cache</module>
         <module>schedule</module>
+        <module>storage-engine</module>
     </modules>
 
 

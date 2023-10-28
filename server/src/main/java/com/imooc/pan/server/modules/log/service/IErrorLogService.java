@@ -8,6 +8,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @description 针对表【r_pan_error_log(error log table)】的数据库操作Service
 * @createDate 2023-10-23 21:05:29
 */
-public interface driveHarborErrorLogService extends IService<driveHarborErrorLog> {
+public interface IErrorLogService extends IService<driveHarborErrorLog> {
 
 }

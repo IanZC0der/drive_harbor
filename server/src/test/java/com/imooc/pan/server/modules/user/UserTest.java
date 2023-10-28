@@ -7,6 +7,7 @@ import com.imooc.pan.server.driveHarborServerLauncher;
 import com.imooc.pan.server.modules.user.constants.UserConstants;
 import com.imooc.pan.server.modules.user.context.*;
 import com.imooc.pan.server.modules.user.service.IUserService;
+import com.imooc.pan.server.modules.user.vo.UserInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -275,6 +276,17 @@ public class UserTest {
         changePasswordContext.setNewPassword(PASSWORD + "_change");
 
         iUserService.changePassword(changePasswordContext);
+    }
+
+    @Test
+    public void testQueryUserInfo() {
+
+        UserRegisterContext context = createUserRegisterContext();
+        Long register = iUserService.register(context);
+        Assert.isTrue(register.longValue() > 0L);
+
+        UserInfoVO userInfoVO = iUserService.info(register);
+        Assert.notNull(userInfoVO);
     }
 
 

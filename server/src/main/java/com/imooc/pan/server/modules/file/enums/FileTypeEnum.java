@@ -1,6 +1,6 @@
 package com.imooc.pan.server.modules.file.enums;
 
-import com.imooc.pan.core.exception.RPanBusinessException;
+import com.imooc.pan.core.exception.driveHarborBusinessException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -12,8 +12,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
- * 文件类型枚举类
- * 文件类型（1 普通文件 2 压缩文件 3 excel 4 word 5 pdf 6 txt 7 图片 8 音频 9 视频 10 ppt 11 源码文件 12 csv）
+ * file type enums
+ * file types, 1: normal file, 2: zipped file, 3: excel, 4: word, 5: pdf, 6: txt, 7: pics, 8: audios, 9: videos, 10: PPT, 11: code, 12: csv
  */
 @AllArgsConstructor
 @Getter
@@ -66,28 +66,28 @@ public enum FileTypeEnum {
     });
 
     /**
-     * 文件类型的code
+     * file type code
      */
     private Integer code;
 
     /**
-     * 文件类型描述
+     * file type desc
      */
     private String desc;
 
     /**
-     * 排序字段
-     * 按照降序顺序排序
+     * file type order
+     * descending order
      */
     private Integer order;
 
     /**
-     * 文件类型匹配器
+     * file type matcher
      */
     private Predicate<String> tester;
 
     /**
-     * 根据文件名称的后缀获取对应的文件类型映射code
+     * get file type code by the suffix of the file name
      *
      * @param fileSuffix
      * @return
@@ -100,7 +100,7 @@ public enum FileTypeEnum {
         if (result.isPresent()) {
             return result.get().getCode();
         }
-        throw new RPanBusinessException("获取文件类型失败");
+        throw new driveHarborBusinessException("Failed to get the file type");
     }
 
 }

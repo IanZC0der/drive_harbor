@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "com.imooc.pan.server")
 @Data
-public class PanServerConfig {
+public class HarborServerConfig {
 
     /**
      * chunk file expiration days.

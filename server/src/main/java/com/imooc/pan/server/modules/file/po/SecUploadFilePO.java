@@ -8,24 +8,24 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
- * 秒传文件接口参数对象实体
+ * speed file uploading PO entity
  */
-@ApiModel("秒传文件接口参数对象实体")
+@ApiModel("speed file uploading PO params")
 @Data
 public class SecUploadFilePO implements Serializable {
 
     private static final long serialVersionUID = 5638531322051664526L;
 
-    @ApiModelProperty(value = "秒传的父文件夹ID", required = true)
-    @NotBlank(message = "父文件夹ID不能为空")
+    @ApiModelProperty(value = "IDParent folder id of the file to be uploaded", required = true)
+    @NotBlank(message = "Parent folder id cannot be blank")
     private String parentId;
 
-    @ApiModelProperty(value = "文件名称", required = true)
-    @NotBlank(message = "文件名称不能为空")
+    @ApiModelProperty(value = "file name", required = true)
+    @NotBlank(message = "file name cannot be blank")
     private String filename;
 
-    @ApiModelProperty(value = "文件的唯一标识", required = true)
-    @NotBlank(message = "文件的唯一标识不能为空")
+    @ApiModelProperty(value = "unique file identifier", required = true)
+    @NotBlank(message = "Identifier cannot be blank")
     private String identifier;
 
 }

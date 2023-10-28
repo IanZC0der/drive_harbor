@@ -3,6 +3,7 @@ package com.imooc.pan.server.modules.user.service;
 import com.imooc.pan.server.modules.user.context.*;
 import com.imooc.pan.server.modules.user.entity.driveHarborUser;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.imooc.pan.server.modules.user.vo.UserInfoVO;
 
 /**
 * @author benchi
@@ -24,4 +25,11 @@ public interface IUserService extends IService<driveHarborUser> {
     void resetPassword(ResetPasswordContext resetPasswordContext);
 
     void changePassword(ChangePasswordContext changePasswordContext);
+
+    /**
+     * query the info of the user
+     * @param userId
+     * @return
+     */
+    UserInfoVO info(Long userId);
 }

@@ -10,6 +10,7 @@ import com.imooc.pan.core.utils.JwtUtil;
 import com.imooc.pan.core.utils.PasswordUtil;
 import com.imooc.pan.server.modules.file.constants.FileConstants;
 import com.imooc.pan.server.modules.file.context.CreateFolderContext;
+import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
 import com.imooc.pan.server.modules.file.service.IUserFileService;
 import com.imooc.pan.server.modules.user.constants.UserConstants;
 import com.imooc.pan.server.modules.user.context.*;
@@ -17,6 +18,7 @@ import com.imooc.pan.server.modules.user.converter.UserConverter;
 import com.imooc.pan.server.modules.user.entity.driveHarborUser;
 import com.imooc.pan.server.modules.user.service.IUserService;
 import com.imooc.pan.server.modules.user.mapper.driveHarborUserMapper;
+import com.imooc.pan.server.modules.user.vo.UserInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -138,6 +140,39 @@ public class UserServiceImpl extends ServiceImpl<driveHarborUserMapper, driveHar
         checkOldPassword(changePasswordContext);
         doChangePassword(changePasswordContext);
         exitLoginStatus(changePasswordContext);
+    }
+
+    /**
+     * 1. query the info of the user entity
+     * 2. query the info of the user root folder
+     * @param userId
+     * @return
+     */
+    @Override
+    public UserInfoVO info(Long userId) {
+        driveHarborUser entity = getById(userId);
+        if(Objects.isNull(entity)){
+            throw new driveHarborBusinessException("user doesn't exist");
+        }
+
+        driveHarborUserFile harborUserFile = getUserRootFileInfo(userId);
+        if(Objects.isNull(harborUserFile)){
+            throw new driveHarborBusinessException("unable to get the root folder info");
+        }
+
+        return userConverter.assembleUserInfoVO(entity, harborUserFile);
+
+    }
+
+
+
+    /**
+     * get user root folder info
+     * @param userId
+     * @return
+     */
+    private driveHarborUserFile getUserRootFileInfo(Long userId) {
+        return iUserFileService.getUserRootFile(userId);
     }
 
 

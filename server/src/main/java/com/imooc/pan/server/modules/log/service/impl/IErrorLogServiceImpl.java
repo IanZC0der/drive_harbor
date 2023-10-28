@@ -2,7 +2,7 @@ package com.imooc.pan.server.modules.log.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.pan.server.modules.log.entity.driveHarborErrorLog;
-import com.imooc.pan.server.modules.log.service.driveHarborErrorLogService;
+import com.imooc.pan.server.modules.log.service.IErrorLogService;
 import com.imooc.pan.server.modules.log.mapper.driveHarborErrorLogMapper;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 * @createDate 2023-10-23 21:05:29
 */
 @Service
-public class driveHarborErrorLogServiceImpl extends ServiceImpl<driveHarborErrorLogMapper, driveHarborErrorLog>
-    implements driveHarborErrorLogService{
+public class IErrorLogServiceImpl extends ServiceImpl<driveHarborErrorLogMapper, driveHarborErrorLog>
+    implements IErrorLogService {
 
 }
 

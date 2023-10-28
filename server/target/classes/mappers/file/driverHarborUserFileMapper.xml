@@ -5,19 +5,19 @@
 <mapper namespace="com.imooc.pan.server.modules.file.mapper.driverHarborUserFileMapper">
 
     <resultMap id="BaseResultMap" type="com.imooc.pan.server.modules.file.entity.driveHarborUserFile">
-            <id property="file_id" column="file_id" jdbcType="BIGINT"/>
-            <result property="user_id" column="user_id" jdbcType="BIGINT"/>
-            <result property="parent_id" column="parent_id" jdbcType="BIGINT"/>
-            <result property="real_file_id" column="real_file_id" jdbcType="BIGINT"/>
-            <result property="filename" column="filename" jdbcType="VARCHAR"/>
-            <result property="folder_flag" column="folder_flag" jdbcType="TINYINT"/>
-            <result property="file_size_desc" column="file_size_desc" jdbcType="VARCHAR"/>
-            <result property="file_type" column="file_type" jdbcType="TINYINT"/>
-            <result property="del_flag" column="del_flag" jdbcType="TINYINT"/>
-            <result property="create_user" column="create_user" jdbcType="BIGINT"/>
-            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="update_user" column="update_user" jdbcType="BIGINT"/>
-            <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+            <id property="fileId" column="file_id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+            <result property="realFileId" column="real_file_id" jdbcType="BIGINT"/>
+            <result property="fileName" column="filename" jdbcType="VARCHAR"/>
+            <result property="folderFlag" column="folder_flag" jdbcType="TINYINT"/>
+            <result property="fileSizeDesc" column="file_size_desc" jdbcType="VARCHAR"/>
+            <result property="fileType" column="file_type" jdbcType="TINYINT"/>
+            <result property="delFlag" column="del_flag" jdbcType="TINYINT"/>
+            <result property="createUser" column="create_user" jdbcType="BIGINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -27,4 +27,28 @@
         create_user,create_time,update_user,
         update_time
     </sql>
+    <select id="selectFileList" resultType="com.imooc.pan.server.modules.file.vo.DriveHarborUserFileVO">
+        SELECT
+            file_id AS fileId,
+            parent_id AS parentId,
+            filename AS filename,
+            file_size_desc AS fileSizeDesc,
+            folder_flag AS folderFlag,
+            file_type as fileType,
+            update_time as updateTime
+        FROM
+            r_pan_user_file
+        WHERE
+            user_id = #{param.userId}
+        <if test="param.parentId != null and param.parentId != -1">
+            AND parent_id = #{param.parentId}
+        </if>
+        <if test="param.fileTypeArray != null">
+            AND file_type IN
+            <foreach collection="param.fileTypeArray" open="(" close=")" item="item" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        AND del_flag = #{param.delFlag}
+    </select>
 </mapper>

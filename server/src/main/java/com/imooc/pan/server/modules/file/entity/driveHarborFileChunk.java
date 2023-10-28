@@ -31,31 +31,31 @@ public class driveHarborFileChunk implements Serializable {
      * real path for the file chunk
      */
     @TableField(value = "real_path")
-    private String real_path;
+    private String realPath;
 
     /**
      * chunk number
      */
     @TableField(value = "chunk_number")
-    private Integer chunk_number;
+    private Integer chunkNumber;
 
     /**
      * expiration time
      */
     @TableField(value = "expiration_time")
-    private Date expiration_time;
+    private Date expirationTime;
 
     /**
      * creator
      */
     @TableField(value = "create_user")
-    private Long create_user;
+    private Long createUser;
 
     /**
      * update time
      */
     @TableField(value = "create_time")
-    private Date create_time;
+    private Date createTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

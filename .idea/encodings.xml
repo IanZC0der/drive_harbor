@@ -15,6 +15,12 @@
     <file url="file://$PROJECT_DIR$/framework/schedule/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/storage-engine/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/storage-engine/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/storage-engine/storage-engine-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/storage-engine/storage-engine-fastdfs/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/storage-engine/storage-engine-local/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/storage-engine/storage-engine-oss/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/swagger2/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/web/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/server/src/main/java" charset="UTF-8" />

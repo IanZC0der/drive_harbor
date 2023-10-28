@@ -1,8 +1,10 @@
 package com.imooc.pan.server.modules.user.converter;
 
+import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
 import com.imooc.pan.server.modules.user.context.*;
 import com.imooc.pan.server.modules.user.entity.driveHarborUser;
 import com.imooc.pan.server.modules.user.po.*;
+import com.imooc.pan.server.modules.user.vo.UserInfoVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -22,4 +24,15 @@ public interface UserConverter {
     ResetPasswordContext resetPasswordPO2ResetPasswordContext(ResetPasswordPO resetPasswordPO);
 
     ChangePasswordContext changePasswordPO2ChangePasswordContext(ChangePasswordPO changePasswordPO);
+
+    /**
+     * assemble the info
+     * @param aUser
+     * @param aFile
+     * @return
+     */
+    @Mapping(source = "aUser.username", target = "username")
+    @Mapping(source = "aFile.fileId", target = "rootFileId")
+    @Mapping(source = "aFile.fileName", target = "rootFilename")
+    UserInfoVO assembleUserInfoVO(driveHarborUser aUser, driveHarborUserFile aFile);
 }

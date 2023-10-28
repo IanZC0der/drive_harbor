@@ -1,8 +1,13 @@
 package com.imooc.pan.server.modules.file.service;
 
-import com.imooc.pan.server.modules.file.context.CreateFolderContext;
+import com.imooc.pan.server.modules.file.context.*;
 import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.imooc.pan.server.modules.file.vo.DriveHarborUserFileVO;
+import com.imooc.pan.server.modules.file.vo.FileChunkUploadVO;
+import com.imooc.pan.server.modules.file.vo.UploadedChunksVO;
+
+import java.util.List;
 
 /**
 * @author benchi
@@ -17,4 +22,39 @@ public interface IUserFileService extends IService<driveHarborUserFile> {
      */
     Long createFolder(CreateFolderContext createFolderContext);
 
+    /**
+     * query the info of the user root folder
+     * @param userId
+     * @return
+     */
+    driveHarborUserFile getUserRootFile(Long userId);
+
+    /**
+     * query the file list of a specific type
+     * @param context
+     * @return
+     */
+    List<DriveHarborUserFileVO> getFileList(QueryFileListContext context);
+
+    /**
+     * update file name
+     * @param context
+     */
+    void updateFilename(UpdateFilenameContext context);
+
+    void deleteFile(DeleteFileContext context);
+
+    boolean secUpload(SecUploadFileContext context);
+
+    /**
+     * single file uploading
+     * @param context
+     */
+    void upload(FileUploadContext context);
+
+    FileChunkUploadVO chunkUpload(FileChunkUploadContext context);
+
+    UploadedChunksVO getUploadedChunks(QueryUploadedChunksContext context);
+
+    void mergeFile(FileChunkMergeContext context);
 }

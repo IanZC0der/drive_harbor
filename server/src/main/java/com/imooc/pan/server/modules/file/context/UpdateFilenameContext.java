@@ -1,12 +1,12 @@
 package com.imooc.pan.server.modules.file.context;
 
-import com.imooc.pan.server.modules.file.entity.RPanUserFile;
+import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
 import lombok.Data;
 
 import java.io.Serializable;
 
 /**
- * 文件重命名参数上下文对象
+ * update file name context
  */
 @Data
 public class UpdateFilenameContext implements Serializable {
@@ -14,23 +14,23 @@ public class UpdateFilenameContext implements Serializable {
     private static final long serialVersionUID = 6171000069397717175L;
 
     /**
-     * 要更新的文件ID
+     * the id of the file to be renamed
      */
     private Long fileId;
 
     /**
-     * 新的文件名称
+     * new file name
      */
     private String newFilename;
 
     /**
-     * 当前的登录用户ID
+     * user id
      */
     private Long userId;
 
     /**
-     * 要更新的文件记录实体
+     * file entity to be updated
      */
-    private RPanUserFile entity;
+    private driveHarborUserFile entity;
 
 }

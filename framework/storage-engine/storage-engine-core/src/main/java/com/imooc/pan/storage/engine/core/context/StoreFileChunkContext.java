@@ -6,53 +6,53 @@ import java.io.InputStream;
 import java.io.Serializable;
 
 /**
- * 保存文件分片的上下文信息
+ * store file chunk context
  */
 @Data
 public class StoreFileChunkContext implements Serializable {
 
     /**
-     * 文件名称
+     * file name
      */
     private String filename;
 
     /**
-     * 文件的唯一标识
+     * identifier
      */
     private String identifier;
 
     /**
-     * 文件的总大小
+     * file total size
      */
     private Long totalSize;
 
     /**
-     * 文件输入流
+     * input stream
      */
     private InputStream inputStream;
 
     /**
-     * 文件的真实存储路径
+     * file real path
      */
     private String realPath;
 
     /**
-     * 文件的总分片数
+     * total chunks
      */
     private Integer totalChunks;
 
     /**
-     * 当前分片的下标
+     * current chunk number
      */
     private Integer chunkNumber;
 
-    /*
-     * 当前分片的大小
+    /**
+     * current chunk size
      */
     private Long currentChunkSize;
 
     /**
-     * 当前登录用户的ID
+     * user id
      */
     private Long userId;
 
