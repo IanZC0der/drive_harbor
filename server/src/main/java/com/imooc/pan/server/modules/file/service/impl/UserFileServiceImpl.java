@@ -275,6 +275,101 @@ public class UserFileServiceImpl extends ServiceImpl<driverHarborUserFileMapper,
         doTransfer(context);
     }
 
+    /**
+     * copy files
+     * 1. check conditions
+     * 2. do copy
+     * @param context
+     */
+    @Override
+    public void copy(CopyFileContext context) {
+        checkCopyCondition(context);
+        doCopy(context);
+    }
+
+    /**
+     * file copy condition check
+     *
+     * 1. target should be folder
+     * 2. files to be copied should not include the target folder or its child folders
+     *
+     * @param context
+     */
+    private void checkCopyCondition(CopyFileContext context) {
+        Long targetParentId = context.getTargetParentId();
+        if (!checkIsFolder(getById(targetParentId))) {
+            throw new driveHarborBusinessException("Target is not a folder.");
+        }
+        List<Long> fileIdList = context.getFileIdList();
+        List<driveHarborUserFile> prepareRecords = listByIds(fileIdList);
+        context.setPrepareRecords(prepareRecords);
+        if (checkIsChildFolder(prepareRecords, targetParentId, context.getUserId())) {
+            throw new driveHarborBusinessException("files to be copied should not include the target folder or its child folders");
+        }
+    }
+
+    /**
+     * do copy
+     *
+     * @param context
+     */
+    private void doCopy(CopyFileContext context) {
+        List<driveHarborUserFile> prepareRecords = context.getPrepareRecords();
+        if (CollectionUtils.isNotEmpty(prepareRecords)) {
+            List<driveHarborUserFile> allRecords = Lists.newArrayList();
+            prepareRecords.stream().forEach(record -> assembleCopyChildRecord(allRecords, record, context.getTargetParentId(), context.getUserId()));
+            if (!saveBatch(allRecords)) {
+                throw new driveHarborBusinessException("Copy failure.");
+            }
+        }
+    }
+
+    /**
+     * assemble copy
+     *
+     * @param allRecords
+     * @param record
+     * @param targetParentId
+     * @param userId
+     */
+    private void assembleCopyChildRecord(List<driveHarborUserFile> allRecords, driveHarborUserFile record, Long targetParentId, Long userId) {
+        Long newFileId = IdUtil.get();
+        Long oldFileId = record.getFileId();
+
+        record.setParentId(targetParentId);
+        record.setFileId(newFileId);
+        record.setUserId(userId);
+        record.setCreateUser(userId);
+        record.setCreateTime(new Date());
+        record.setUpdateUser(userId);
+        record.setUpdateTime(new Date());
+        handleDuplicateFilename(record);
+
+        allRecords.add(record);
+
+        if (checkIsFolder(record)) {
+            List<driveHarborUserFile> childRecords = findChildRecords(oldFileId);
+            if (CollectionUtils.isEmpty(childRecords)) {
+                return;
+            }
+            childRecords.stream().forEach(childRecord -> assembleCopyChildRecord(allRecords, childRecord, newFileId, userId));
+        }
+
+    }
+
+    /**
+     * find children of the folder to be copied
+     *
+     * @param parentId
+     * @return
+     */
+    private List<driveHarborUserFile> findChildRecords(Long parentId) {
+        QueryWrapper queryWrapper = Wrappers.query();
+        queryWrapper.eq("parent_id", parentId);
+        queryWrapper.eq("del_flag", DelFlagEnum.NO.getCode());
+        return list(queryWrapper);
+    }
+
     private void doTransfer(TransferFileContext context) {
         List<driveHarborUserFile> prepareRecords = context.getPrepareRecords();
         prepareRecords.stream().forEach(record -> {
