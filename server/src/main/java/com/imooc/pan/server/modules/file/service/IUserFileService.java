@@ -64,4 +64,6 @@ public interface IUserFileService extends IService<driveHarborUserFile> {
     void preview(FilePreviewContext context);
 
     List<FolderTreeNodeVO> getFolderTree(QueryFolderTreeContext context);
+
+    void transfer(TransferFileContext context);
 }

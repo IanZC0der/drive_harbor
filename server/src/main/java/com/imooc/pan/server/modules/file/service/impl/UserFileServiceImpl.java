@@ -265,6 +265,92 @@ public class UserFileServiceImpl extends ServiceImpl<driverHarborUserFileMapper,
     }
 
     /**
+     * 1. check transfer conditions
+     * 2. transfer
+     * @param context
+     */
+    @Override
+    public void transfer(TransferFileContext context) {
+        checkTransferCondition(context);
+        doTransfer(context);
+    }
+
+    private void doTransfer(TransferFileContext context) {
+        List<driveHarborUserFile> prepareRecords = context.getPrepareRecords();
+        prepareRecords.stream().forEach(record -> {
+            record.setParentId(context.getTargetParentId());
+            record.setUserId(context.getUserId());
+            record.setCreateUser(context.getUserId());
+            record.setCreateTime(new Date());
+            record.setUpdateUser(context.getUserId());
+            record.setUpdateTime(new Date());
+            handleDuplicateFilename(record);
+        });
+        if (!updateBatchById(prepareRecords)) {
+            throw new driveHarborBusinessException("Transfer failure.");
+        }
+    }
+
+    /**
+     * target should be folder
+     * the files to be transferred should not include the target folder nor its children
+     * @param context
+     */
+    private void checkTransferCondition(TransferFileContext context) {
+        Long targetParentId = context.getTargetParentId();
+        if (!checkIsFolder(getById(targetParentId))) {
+            throw new driveHarborBusinessException("Target is not a folder.");
+        }
+        List<Long> fileIdList = context.getFileIdList();
+        List<driveHarborUserFile> prepareRecords = listByIds(fileIdList);
+        context.setPrepareRecords(prepareRecords);
+        if (checkIsChildFolder(prepareRecords, targetParentId, context.getUserId())) {
+            throw new driveHarborBusinessException("Target folder and its children should be included.");
+        }
+
+    }
+
+    /**
+     * 1. selected files don't include a folder, return false
+     * 2. check if the target id is included
+     * @param prepareRecords
+     * @param targetParentId
+     * @param userId
+     * @return
+     */
+    private boolean checkIsChildFolder(List<driveHarborUserFile> prepareRecords, Long targetParentId, Long userId) {
+        prepareRecords = prepareRecords.stream().filter(record -> Objects.equals(record.getFolderFlag(), FolderFlagEnum.YES.getCode())).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(prepareRecords)) {
+            return false;
+        }
+        List<driveHarborUserFile> folderRecords = queryFolderRecords(userId);
+        Map<Long, List<driveHarborUserFile>> folderRecordMap = folderRecords.stream().collect(Collectors.groupingBy(driveHarborUserFile::getParentId));
+        List<driveHarborUserFile> unavailableFolderRecords = Lists.newArrayList();
+        unavailableFolderRecords.addAll(prepareRecords);
+        prepareRecords.stream().forEach(record -> findAllChildFolderRecords(unavailableFolderRecords, folderRecordMap, record));
+        List<Long> unavailableFolderRecordIds = unavailableFolderRecords.stream().map(driveHarborUserFile::getFileId).collect(Collectors.toList());
+        return unavailableFolderRecordIds.contains(targetParentId);
+    }
+
+    /**
+     * find all the child folders
+     * @param unavailableFolderRecords
+     * @param folderRecordMap
+     * @param record
+     */
+    private void findAllChildFolderRecords(List<driveHarborUserFile> unavailableFolderRecords, Map<Long, List<driveHarborUserFile>> folderRecordMap, driveHarborUserFile record) {
+        if (Objects.isNull(record)) {
+            return;
+        }
+        List<driveHarborUserFile> childFolderRecords = folderRecordMap.get(record.getFileId());
+        if (CollectionUtils.isEmpty(childFolderRecords)) {
+            return;
+        }
+        unavailableFolderRecords.addAll(childFolderRecords);
+        childFolderRecords.stream().forEach(childRecord -> findAllChildFolderRecords(unavailableFolderRecords, folderRecordMap, childRecord));
+    }
+
+    /**
      * assemble tree node list
      * @param folderRecords
      * @return

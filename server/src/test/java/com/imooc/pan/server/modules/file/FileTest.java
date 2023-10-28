@@ -531,6 +531,70 @@ public class FileTest {
         folderTree.stream().forEach(FolderTreeNodeVO::print);
     }
 
+    /**
+     * test file transfer success
+     */
+    @Test
+    public void testTransferFileSuccess() {
+        Long userId = register();
+        UserInfoVO userInfoVO = info(userId);
+
+        CreateFolderContext context = new CreateFolderContext();
+        context.setParentId(userInfoVO.getRootFileId());
+        context.setUserId(userId);
+        context.setFolderName("folder-name-1");
+
+        Long folder1 = iUserFileService.createFolder(context);
+        Assert.notNull(folder1);
+
+        context.setFolderName("folder-name-2");
+        Long folder2 = iUserFileService.createFolder(context);
+        Assert.notNull(folder2);
+
+        TransferFileContext transferFileContext = new TransferFileContext();
+        transferFileContext.setTargetParentId(folder1);
+        transferFileContext.setFileIdList(Lists.newArrayList(folder2));
+        transferFileContext.setUserId(userId);
+        iUserFileService.transfer(transferFileContext);
+
+        QueryFileListContext queryFileListContext = new QueryFileListContext();
+        queryFileListContext.setParentId(userInfoVO.getRootFileId());
+        queryFileListContext.setUserId(userId);
+        queryFileListContext.setDelFlag(DelFlagEnum.NO.getCode());
+        List<DriveHarborUserFileVO> records = iUserFileService.getFileList(queryFileListContext);
+        Assert.notEmpty(records);
+    }
+
+    /**
+     *
+     * test file transfer failure
+     * target folder is in the transfer list
+     */
+    @Test(expected = driveHarborBusinessException.class)
+    public void testTransferFileFail() {
+        Long userId = register();
+        UserInfoVO userInfoVO = info(userId);
+
+        CreateFolderContext context = new CreateFolderContext();
+        context.setParentId(userInfoVO.getRootFileId());
+        context.setUserId(userId);
+        context.setFolderName("folder-name-1");
+
+        Long folder1 = iUserFileService.createFolder(context);
+        Assert.notNull(folder1);
+
+        context.setParentId(folder1);
+        context.setFolderName("folder-name-2");
+        Long folder2 = iUserFileService.createFolder(context);
+        Assert.notNull(folder2);
+
+        TransferFileContext transferFileContext = new TransferFileContext();
+        transferFileContext.setTargetParentId(folder2);
+        transferFileContext.setFileIdList(Lists.newArrayList(folder1));
+        transferFileContext.setUserId(userId);
+        iUserFileService.transfer(transferFileContext);
+    }
+
 
     /**
      * generate file entity
