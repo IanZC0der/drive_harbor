@@ -36,6 +36,19 @@ public class FileUtil {
         return filename.substring(filename.lastIndexOf(driveHarborConstants.POINT_STR)).toLowerCase();
     }
 
+    /**
+     * get file type
+     *
+     * @param filename
+     * @return
+     */
+    public static String getFileExtName(String filename) {
+        if (StringUtils.isBlank(filename) || filename.lastIndexOf(driveHarborConstants.POINT_STR) == driveHarborConstants.MINUS_ONE_INT) {
+            return driveHarborConstants.EMPTY_STR;
+        }
+        return filename.substring(filename.lastIndexOf(driveHarborConstants.POINT_STR) + driveHarborConstants.ONE_INT).toLowerCase();
+    }
+
     public static String byteCountToDisplaySize(Long totalSize) {
         if(Objects.isNull(totalSize)){
             return driveHarborConstants.EMPTY_STR;

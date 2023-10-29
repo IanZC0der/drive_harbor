@@ -22,6 +22,36 @@
             <artifactId>r-pan-storage-engine-core</artifactId>
             <version>1.0</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.tobato</groupId>-->
+<!--            <artifactId>fastdfs-client</artifactId>-->
+<!--            <version>${fastdfs.client.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.aliyun.oss</groupId>-->
+<!--            <artifactId>aliyun-sdk-oss</artifactId>-->
+<!--            <version>${oss.client.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.rocketmq</groupId>-->
+<!--            <artifactId>rocketmq-spring-boot-starter</artifactId>-->
+<!--            <version>${rocketmq.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.integration</groupId>-->
+<!--            <artifactId>spring-integration-redis</artifactId>-->
+<!--            <version>${spring-integration.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.integration</groupId>-->
+<!--            <artifactId>spring-integration-zookeeper</artifactId>-->
+<!--            <version>${spring-integration.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.aliyun.oss</groupId>-->
+<!--            <artifactId>aliyun-sdk-oss</artifactId>-->
+<!--            <version>${oss.client.version}</version>-->
+<!--        </dependency>-->
     </dependencies>
 
 </project>

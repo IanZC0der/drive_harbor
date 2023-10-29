@@ -3,10 +3,7 @@ package com.imooc.pan.server.modules.file.service;
 import com.imooc.pan.server.modules.file.context.*;
 import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.imooc.pan.server.modules.file.vo.DriveHarborUserFileVO;
-import com.imooc.pan.server.modules.file.vo.FileChunkUploadVO;
-import com.imooc.pan.server.modules.file.vo.FolderTreeNodeVO;
-import com.imooc.pan.server.modules.file.vo.UploadedChunksVO;
+import com.imooc.pan.server.modules.file.vo.*;
 
 import java.util.List;
 
@@ -68,4 +65,8 @@ public interface IUserFileService extends IService<driveHarborUserFile> {
     void transfer(TransferFileContext context);
 
     void copy(CopyFileContext context);
+
+    List<FileSearchResultVO> search(FileSearchContext context);
+
+    List<BreadcrumbVO> getBreadcrumbs(QueryBreadcrumbsContext context);
 }

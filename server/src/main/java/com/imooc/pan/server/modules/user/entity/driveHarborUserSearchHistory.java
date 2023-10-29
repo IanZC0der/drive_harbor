@@ -25,25 +25,25 @@ public class driveHarborUserSearchHistory implements Serializable {
      * user id
      */
     @TableField(value = "user_id")
-    private Long user_id;
+    private Long userId;
 
     /**
      * search content
      */
     @TableField(value = "search_content")
-    private String search_content;
+    private String searchContent;
 
     /**
      * create time
      */
     @TableField(value = "create_time")
-    private Date create_time;
+    private Date createTime;
 
     /**
      * update time
      */
     @TableField(value = "update_time")
-    private Date update_time;
+    private Date updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

@@ -24,6 +24,8 @@ import com.imooc.pan.server.modules.user.context.UserRegisterContext;
 import com.imooc.pan.server.modules.user.service.IUserService;
 import com.imooc.pan.server.modules.user.vo.UserInfoVO;
 import com.imooc.pan.server.modules.file.vo.FileChunkUploadVO;
+import com.imooc.pan.server.modules.file.vo.FileSearchResultVO;
+import com.imooc.pan.server.modules.file.vo.BreadcrumbVO;
 import lombok.AllArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -655,6 +657,59 @@ public class FileTest {
         copyFileContext.setFileIdList(Lists.newArrayList(folder1));
         copyFileContext.setUserId(userId);
         iUserFileService.copy(copyFileContext);
+    }
+
+    /**
+     * test search success
+     */
+    @Test
+    public void testSearchSuccess() {
+        Long userId = register();
+        UserInfoVO userInfoVO = info(userId);
+
+        CreateFolderContext context = new CreateFolderContext();
+        context.setParentId(userInfoVO.getRootFileId());
+        context.setUserId(userId);
+        context.setFolderName("folder-name-1");
+
+        Long folder1 = iUserFileService.createFolder(context);
+        Assert.notNull(folder1);
+
+        FileSearchContext fileSearchContext = new FileSearchContext();
+        fileSearchContext.setUserId(userId);
+        fileSearchContext.setKeyword("folder-name");
+        List<FileSearchResultVO> result = iUserFileService.search(fileSearchContext);
+        Assert.notEmpty(result);
+
+        // the interface support prefix partial match only
+        fileSearchContext.setKeyword("name-1");
+        result = iUserFileService.search(fileSearchContext);
+        Assert.isTrue(CollectionUtils.isEmpty(result));
+    }
+
+    /**
+     * test bread crumbs query success
+     */
+    @Test
+    public void testGetBreadcrumbsSuccess() {
+        Long userId = register();
+        UserInfoVO userInfoVO = info(userId);
+
+        CreateFolderContext context = new CreateFolderContext();
+        context.setParentId(userInfoVO.getRootFileId());
+        context.setUserId(userId);
+        context.setFolderName("folder-name-1");
+
+        Long folder1 = iUserFileService.createFolder(context);
+        Assert.notNull(folder1);
+
+        QueryBreadcrumbsContext queryBreadcrumbsContext = new QueryBreadcrumbsContext();
+        queryBreadcrumbsContext.setFileId(folder1);
+        queryBreadcrumbsContext.setUserId(userId);
+
+        List<BreadcrumbVO> result = iUserFileService.getBreadcrumbs(queryBreadcrumbsContext);
+        Assert.notEmpty(result);
+        Assert.isTrue(result.size() == 2);
     }
 
 

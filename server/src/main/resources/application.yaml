@@ -52,3 +52,11 @@ logging:
   level:
     root: INFO
 
+com:
+  imooc:
+    pan:
+      storage:
+        engine:
+          fdfs:
+            connect-timeout: 600
+            tracker-list:

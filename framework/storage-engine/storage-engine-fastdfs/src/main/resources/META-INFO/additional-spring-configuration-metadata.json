@@ -1,0 +1,22 @@
+{
+  "properties": [
+    {
+      "name": "com.imooc.pan.storage.engine.fdfs.connection-timeout",
+      "type": "java.lang.Integer",
+      "description": "connection timeout",
+      "defaultValue": 600
+    },
+    {
+      "name": "com.imooc.pan.storage.engine.fdfs.tracker-list",
+      "type": "java.util.List",
+      "description": "tracker server list",
+      "defaultValue": []
+    },
+    {
+      "name": "com.imooc.pan.storage.engine.fdfs.group",
+      "type": "java.lang.String",
+      "description": "group name",
+      "defaultValue": "group1"
+    }
+  ]
+}

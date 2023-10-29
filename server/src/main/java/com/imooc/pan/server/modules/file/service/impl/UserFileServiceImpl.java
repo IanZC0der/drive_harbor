@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import com.imooc.pan.core.constants.driveHarborConstants;
 import com.imooc.pan.core.exception.driveHarborBusinessException;
 import com.imooc.pan.core.utils.FileUtil;
+import com.imooc.pan.server.common.event.event.UserSearchEvent;
 import com.imooc.pan.server.common.event.file.DeleteFileEvent;
 import com.imooc.pan.server.common.utils.HttpUtil;
 import com.imooc.pan.server.modules.file.context.*;
@@ -21,10 +22,7 @@ import com.imooc.pan.server.modules.file.service.IFileChunkService;
 import com.imooc.pan.server.modules.file.service.IFileService;
 import com.imooc.pan.server.modules.file.service.IUserFileService;
 import com.imooc.pan.server.modules.file.mapper.driverHarborUserFileMapper;
-import com.imooc.pan.server.modules.file.vo.DriveHarborUserFileVO;
-import com.imooc.pan.server.modules.file.vo.FileChunkUploadVO;
-import com.imooc.pan.server.modules.file.vo.FolderTreeNodeVO;
-import com.imooc.pan.server.modules.file.vo.UploadedChunksVO;
+import com.imooc.pan.server.modules.file.vo.*;
 import com.imooc.pan.storage.engine.core.AbstractStorageEngine;
 import com.imooc.pan.storage.engine.core.StorageEngine;
 import com.imooc.pan.storage.engine.core.context.ReadFileContext;
@@ -285,6 +283,81 @@ public class UserFileServiceImpl extends ServiceImpl<driverHarborUserFileMapper,
     public void copy(CopyFileContext context) {
         checkCopyCondition(context);
         doCopy(context);
+    }
+
+    /**
+     * 1. do search
+     * 2. assemble parent folder names to return to the front end
+     * 3. after search: e.g, event
+     * @param context
+     * @return
+     */
+    @Override
+    public List<FileSearchResultVO> search(FileSearchContext context) {
+        List<FileSearchResultVO> result = doSearch(context);
+        fillParentFilename(result);
+        afterSearch(context);
+        return result;
+    }
+
+    /**
+     * get folders info
+     * ssemble the folders info to a list
+     * @param context
+     * @return
+     */
+    @Override
+    public List<BreadcrumbVO> getBreadcrumbs(QueryBreadcrumbsContext context) {
+        List<driveHarborUserFile> folderRecords = queryFolderRecords(context.getUserId());
+        Map<Long, BreadcrumbVO> prepareBreadcrumbVOMap = folderRecords.stream().map(BreadcrumbVO::transfer).collect(Collectors.toMap(BreadcrumbVO::getId, a -> a));
+        BreadcrumbVO currentNode;
+        Long fileId = context.getFileId();
+        List<BreadcrumbVO> result = Lists.newLinkedList();
+        do {
+            currentNode = prepareBreadcrumbVOMap.get(fileId);
+            if (Objects.nonNull(currentNode)) {
+                result.add(0, currentNode);
+                fileId = currentNode.getParentId();
+            }
+        } while (Objects.nonNull(currentNode));
+        return result;
+    }
+
+
+    /**
+     * 1. publish event
+     *
+     * @param context
+     */
+    private void afterSearch(FileSearchContext context) {
+        UserSearchEvent event = new UserSearchEvent(this, context.getKeyword(), context.getUserId());
+        applicationContext.publishEvent(event);
+    }
+
+
+    /**
+     * assemble parent folder names
+     *
+     * @param result
+     */
+    private void fillParentFilename(List<FileSearchResultVO> result) {
+        if (CollectionUtils.isEmpty(result)) {
+            return;
+        }
+        List<Long> parentIdList = result.stream().map(FileSearchResultVO::getParentId).collect(Collectors.toList());
+        List<driveHarborUserFile> parentRecords = listByIds(parentIdList);
+        Map<Long, String> fileId2filenameMap = parentRecords.stream().collect(Collectors.toMap(driveHarborUserFile::getFileId, driveHarborUserFile::getFileName));
+        result.stream().forEach(vo -> vo.setParentFilename(fileId2filenameMap.get(vo.getParentId())));
+    }
+
+    /**
+     * search files
+     *
+     * @param context
+     * @return
+     */
+    private List<FileSearchResultVO> doSearch(FileSearchContext context) {
+        return baseMapper.searchFile(context);
     }
 
     /**

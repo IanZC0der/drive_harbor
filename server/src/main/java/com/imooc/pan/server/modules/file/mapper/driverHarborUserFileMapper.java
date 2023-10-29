@@ -1,9 +1,11 @@
 package com.imooc.pan.server.modules.file.mapper;
 
+import com.imooc.pan.server.modules.file.context.FileSearchContext;
 import com.imooc.pan.server.modules.file.context.QueryFileListContext;
 import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.imooc.pan.server.modules.file.vo.DriveHarborUserFileVO;
+import com.imooc.pan.server.modules.file.vo.FileSearchResultVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,6 +24,8 @@ public interface driverHarborUserFileMapper extends BaseMapper<driveHarborUserFi
      * @return
      */
     List<DriveHarborUserFileVO> selectFileList(@Param("param") QueryFileListContext context);
+
+    List<FileSearchResultVO> searchFile(@Param("param") FileSearchContext context);
 }
 
 

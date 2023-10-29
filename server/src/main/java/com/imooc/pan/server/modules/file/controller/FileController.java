@@ -11,12 +11,10 @@ import com.imooc.pan.server.modules.file.converter.FileConverter;
 import com.imooc.pan.server.modules.file.enums.DelFlagEnum;
 import com.imooc.pan.server.modules.file.po.*;
 import com.imooc.pan.server.modules.file.service.IUserFileService;
-import com.imooc.pan.server.modules.file.vo.DriveHarborUserFileVO;
-import com.imooc.pan.server.modules.file.vo.FileChunkUploadVO;
-import com.imooc.pan.server.modules.file.vo.FolderTreeNodeVO;
-import com.imooc.pan.server.modules.file.vo.UploadedChunksVO;
+import com.imooc.pan.server.modules.file.vo.*;
 import com.imooc.pan.server.modules.user.service.IUserService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -262,6 +260,41 @@ public class FileController {
         context.setUserId(UserIdUtil.get());
         iUserFileService.copy(context);
         return R.success();
+    }
+
+    @ApiOperation(
+            value = "file search",
+            notes = "This interface provides the functionality of file search",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @GetMapping("file/search")
+    public R<List<FileSearchResultVO>> search(@Validated FileSearchPO fileSearchPO) {
+        FileSearchContext context = new FileSearchContext();
+        context.setKeyword(fileSearchPO.getKeyword());
+        context.setUserId(UserIdUtil.get());
+        String fileTypes = fileSearchPO.getFileTypes();
+        if (StringUtils.isNotBlank(fileTypes) && !Objects.equals(FileConstants.ALL_FILE_TYPE, fileTypes)) {
+            List<Integer> fileTypeArray = Splitter.on(driveHarborConstants.COMMON_SEPARATOR).splitToList(fileTypes).stream().map(Integer::valueOf).collect(Collectors.toList());
+            context.setFileTypeArray(fileTypeArray);
+        }
+        List<FileSearchResultVO> result = iUserFileService.search(context);
+        return R.data(result);
+    }
+
+    @ApiOperation(
+            value = "query bread crumbs list",
+            notes = "This interface provides the functionality of querying crumbs list",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @GetMapping("file/breadcrumbs")
+    public R<List<BreadcrumbVO>> getBreadcrumbs(@NotBlank(message = "fileId cannot be null.") @RequestParam(value = "fileId", required = false) String fileId) {
+        QueryBreadcrumbsContext context = new QueryBreadcrumbsContext();
+        context.setFileId(IdUtil.decrypt(fileId));
+        context.setUserId(UserIdUtil.get());
+        List<BreadcrumbVO> result = iUserFileService.getBreadcrumbs(context);
+        return R.data(result);
     }
 
 }
