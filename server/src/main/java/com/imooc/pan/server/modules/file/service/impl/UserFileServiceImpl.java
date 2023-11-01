@@ -323,6 +323,51 @@ public class UserFileServiceImpl extends ServiceImpl<driverHarborUserFileMapper,
         return result;
     }
 
+    /**
+     * recursively query the file records
+     * the file could be a folder, so we need to keep querying until there is no folder left to be queried
+     * @param records
+     * @return
+     */
+    @Override
+    public List<driveHarborUserFile> findAllFileRecords(List<driveHarborUserFile> records) {
+        List<driveHarborUserFile> result = Lists.newArrayList(records);
+        if (CollectionUtils.isEmpty(result)) {
+            return result;
+        }
+        long folderCount = result.stream().filter(record -> Objects.equals(record.getFolderFlag(), FolderFlagEnum.YES.getCode())).count();
+        if (folderCount == 0) {
+            return result;
+        }
+        records.stream().forEach(record -> doFindAllChildRecords(result, record));
+        return result;
+
+    }
+
+    private void doFindAllChildRecords(List<driveHarborUserFile> result, driveHarborUserFile record) {
+        if (Objects.isNull(record)) {
+            return;
+        }
+        if (!checkIsFolder(record)) {
+            return;
+        }
+        List<driveHarborUserFile> childRecords = findChildRecordsIgnoreDelFlag(record.getFileId());
+        if (CollectionUtils.isEmpty(childRecords)) {
+            return;
+        }
+        result.addAll(childRecords);
+        childRecords.stream()
+                .filter(childRecord -> FolderFlagEnum.YES.getCode().equals(childRecord.getFolderFlag()))
+                .forEach(childRecord -> doFindAllChildRecords(result, childRecord));
+    }
+
+    private List<driveHarborUserFile> findChildRecordsIgnoreDelFlag(Long fileId) {
+        QueryWrapper queryWrapper = Wrappers.query();
+        queryWrapper.eq("parent_id", fileId);
+        List<driveHarborUserFile> childRecords = list(queryWrapper);
+        return childRecords;
+    }
+
 
     /**
      * 1. publish event
