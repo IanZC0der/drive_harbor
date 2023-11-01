@@ -53,5 +53,35 @@ public interface driveHarborConstants {
      */
     String BASE_COMPONENT_SCAN_PATH = "com.imooc.pan";
 
+    /**
+     * question mark
+     */
+    String QUESTION_MARK_STR = "?";
+
+    /**
+     * eqaul sign
+     */
+    String EQUALS_MARK_STR = "=";
+
+    /**
+     * and
+     */
+    String AND_MARK_STR = "&";
+
+    /**
+     * left bracket
+     */
+    String LEFT_BRACKET_STR = "[";
+
+    /**
+     * right bracket
+     */
+    String RIGHT_BRACKET_STR = "]";
+
+    /**
+     * common encrypt str
+     */
+    String COMMON_ENCRYPT_STR = "****";
+
 
 }

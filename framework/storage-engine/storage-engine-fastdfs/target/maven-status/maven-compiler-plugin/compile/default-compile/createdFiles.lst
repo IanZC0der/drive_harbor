@@ -1,1 +1,3 @@
 com/imooc/pan/storage/engine/fastdfs/FastDFSStorageEngine.class
+META-INF/spring-configuration-metadata.json
+com/imooc/pan/storage/engine/fastdfs/config/FastDFSStorageEngineConfig.class

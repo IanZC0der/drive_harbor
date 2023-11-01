@@ -14,6 +14,7 @@
         <module>storage-engine-local</module>
         <module>storage-engine-oss</module>
         <module>storage-engine-fastdfs</module>
+<!--        <module>storage-engine-gcs</module>-->
     </modules>
 
     <artifactId>r-pan-storage-engine</artifactId>

@@ -1,0 +1,22 @@
+{
+  "properties": [
+    {
+      "name": "com.imooc.pan.storage.engine.gcs.project-id",
+      "type": "java.lang.String",
+      "description": "project id",
+      "defaultValue": "cloud-zhang-benchi2"
+    },
+    {
+      "name": "com.imooc.pan.storage.engine.gcs.credentials-path",
+      "type": "java.lang.String",
+      "description": "path to the credentials",
+      "defaultValue": "/Users/benchi/Downloads/cloud-zhang-benchi2-2655a444063c.json"
+    },
+    {
+      "name": "com.imooc.pan.storage.engine.gcs.bucket-name",
+      "type": "java.lang.String",
+      "description": "bucket name",
+      "defaultValue": "drive-harbor-test"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "groups": [
+    {
+      "name": "com.imooc.pan.storage.engine.gcs",
+      "type": "com.imooc.pan.storage.engine.gcs.config.GCSStorageConfig",
+      "sourceType": "com.imooc.pan.storage.engine.gcs.config.GCSStorageConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.imooc.pan.storage.engine.gcs.bucket-name",
+      "type": "java.lang.String",
+      "sourceType": "com.imooc.pan.storage.engine.gcs.config.GCSStorageConfig"
+    },
+    {
+      "name": "com.imooc.pan.storage.engine.gcs.credentials-path",
+      "type": "java.lang.String",
+      "sourceType": "com.imooc.pan.storage.engine.gcs.config.GCSStorageConfig"
+    },
+    {
+      "name": "com.imooc.pan.storage.engine.gcs.project-id",
+      "type": "java.lang.String",
+      "description": "end point of the bucket",
+      "sourceType": "com.imooc.pan.storage.engine.gcs.config.GCSStorageConfig"
+    }
+  ],
+  "hints": []
+}

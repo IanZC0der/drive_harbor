@@ -11,13 +11,15 @@
       "name": "com.imooc.pan.storage.engine.fdfs.connect-timeout",
       "type": "java.lang.Integer",
       "description": "oonnect time out",
-      "sourceType": "com.imooc.pan.storage.engine.fastdfs.config.FastDFSStorageEngineConfig"
+      "sourceType": "com.imooc.pan.storage.engine.fastdfs.config.FastDFSStorageEngineConfig",
+      "defaultValue": 600
     },
     {
       "name": "com.imooc.pan.storage.engine.fdfs.group",
       "type": "java.lang.String",
       "description": "group name",
-      "sourceType": "com.imooc.pan.storage.engine.fastdfs.config.FastDFSStorageEngineConfig"
+      "sourceType": "com.imooc.pan.storage.engine.fastdfs.config.FastDFSStorageEngineConfig",
+      "defaultValue": "group1"
     },
     {
       "name": "com.imooc.pan.storage.engine.fdfs.tracker-list",

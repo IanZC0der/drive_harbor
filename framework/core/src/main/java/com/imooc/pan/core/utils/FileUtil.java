@@ -198,4 +198,22 @@ public class FileUtil {
         fileChannel.close();
         writableByteChannel.close();
     }
+
+    /**
+     * data transfer from stream to stream
+     *
+     * @param inputStream
+     * @param outputStream
+     */
+    public static void writeStream2StreamNormal(InputStream inputStream, OutputStream outputStream) throws IOException {
+        byte[] buffer = new byte[1024];
+        int len;
+        while ((len = inputStream.read(buffer)) != driveHarborConstants.MINUS_ONE_INT) {
+            outputStream.write(buffer, driveHarborConstants.ZERO_INT, len);
+        }
+        outputStream.flush();
+        inputStream.close();
+        outputStream.close();
+    }
+
 }

@@ -37,6 +37,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="drive_harbor" target="1.5" />
+      <module name="r-pan-storage-engine-gcs" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -56,6 +57,7 @@
       <module name="r-pan-storage-engine" options="-parameters" />
       <module name="r-pan-storage-engine-core" options="-parameters" />
       <module name="r-pan-storage-engine-fastdfs" options="-parameters" />
+      <module name="r-pan-storage-engine-gcs" options="-parameters" />
       <module name="r-pan-storage-engine-local" options="-parameters" />
       <module name="r-pan-storage-engine-oss" options="-parameters" />
       <module name="r-pan-swagger2" options="-parameters" />
