@@ -62,14 +62,14 @@ logging:
 #            credentials-path: "/Users/benchi/Downloads/cloud-zhang-benchi2-2655a444063c.json"
 
 
-com:
-  imooc:
-    pan:
-      storage:
-        engine:
-          oss:
-            bucket-name: driveharbor-testt-1
-            endpoint: oss-us-east-1.aliyuncs.com
-            access-key-id: LTAI5tH3TMdoWtXTXv6CZ8xu
-            access-key-secret: gAaG2PbsX4uub7vofD6yN4ILmuEDmS
-            auto-create-bucket: true
+#com:
+#  imooc:
+#    pan:
+#      storage:
+#        engine:
+#          oss:
+#            bucket-name: driveharbor-testt
+#            endpoint: oss-us-east-1.aliyuncs.com
+#            access-key-id: LTAI5tH3TMdoWtXTXv6CZ8xu
+#            access-key-secret: gAaG2PbsX4uub7vofD6yN4ILmuEDmS
+#            auto-create-bucket: true
