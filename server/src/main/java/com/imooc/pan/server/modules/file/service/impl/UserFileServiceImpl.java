@@ -344,6 +344,38 @@ public class UserFileServiceImpl extends ServiceImpl<driverHarborUserFileMapper,
 
     }
 
+    @Override
+    public List<driveHarborUserFile> findAllFileRecordsByFileIdList(List<Long> fileIdList) {
+        if (CollectionUtils.isEmpty(fileIdList)) {
+            return Lists.newArrayList();
+        }
+        List<driveHarborUserFile> records = listByIds(fileIdList);
+        if (CollectionUtils.isEmpty(records)) {
+            return Lists.newArrayList();
+        }
+        return findAllFileRecords(records);
+    }
+
+    @Override
+    public List<DriveHarborUserFileVO> transferVOList(List<driveHarborUserFile> records) {
+        if (CollectionUtils.isEmpty(records)) {
+            return Lists.newArrayList();
+        }
+        return records.stream().map(fileConverter::driveHarborUserFile2DriveHarborUserFileVO).collect(Collectors.toList());
+    }
+
+    @Override
+    public void downloadWithoutCheckUser(FileDownloadContext context) {
+        driveHarborUserFile record = getById(context.getFileId());
+        if (Objects.isNull(record)) {
+            throw new driveHarborBusinessException("current record doesn't exist");
+        }
+        if (checkIsFolder(record)) {
+            throw new driveHarborBusinessException("Folder cannot be downloaded");
+        }
+        doDownload(record, context.getResponse());
+    }
+
     private void doFindAllChildRecords(List<driveHarborUserFile> result, driveHarborUserFile record) {
         if (Objects.isNull(record)) {
             return;

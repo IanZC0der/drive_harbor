@@ -54,7 +54,6 @@ public class CommonLoginAspect {
     }
 
     /**
-     * point cut around
      * 1. check to see if login verification is needed
      * 2. verify login info
      *  a. get token from request header or params

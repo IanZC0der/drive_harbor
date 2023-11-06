@@ -6,6 +6,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import javax.validation.constraints.NotBlank;
 @ServletComponentScan(basePackages = driveHarborConstants.BASE_COMPONENT_SCAN_PATH)
 @EnableTransactionManagement
 @MapperScan(basePackages = driveHarborConstants.BASE_COMPONENT_SCAN_PATH + ".server.modules.**.mapper")
+@EnableAsync
 public class driveHarborServerLauncher {
     public static void main(String[] args){
         SpringApplication.run(driveHarborServerLauncher.class);

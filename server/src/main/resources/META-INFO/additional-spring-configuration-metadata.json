@@ -5,6 +5,12 @@
       "type": "java.lang.Integer",
       "description": "chunk file expiration days",
       "defaultValue": "1"
+    },
+    {
+      "name": "com.imooc.pan.server.share-prefix",
+      "type": "java.lang.String",
+      "description": "prefix of the share link",
+      "defaultValue": "http://127.0.0.1:serverPort/share/"
     }
   ]
 }

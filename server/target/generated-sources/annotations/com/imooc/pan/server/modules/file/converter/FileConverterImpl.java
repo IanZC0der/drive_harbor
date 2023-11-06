@@ -20,6 +20,7 @@ import com.imooc.pan.server.modules.file.po.FileUploadPO;
 import com.imooc.pan.server.modules.file.po.QueryUploadedChunksPO;
 import com.imooc.pan.server.modules.file.po.SecUploadFilePO;
 import com.imooc.pan.server.modules.file.po.UpdateFilenamePO;
+import com.imooc.pan.server.modules.file.vo.DriveHarborUserFileVO;
 import com.imooc.pan.server.modules.file.vo.FolderTreeNodeVO;
 import com.imooc.pan.storage.engine.core.context.StoreFileChunkContext;
 import javax.annotation.Generated;
@@ -27,7 +28,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-10-31T20:25:02-0500",
+    date = "2023-11-05T17:22:53-0600",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 1.8.0_341 (Oracle Corporation)"
 )
 @Component
@@ -257,5 +258,23 @@ public class FileConverterImpl implements FileConverter {
         folderTreeNodeVO.setChildren( com.google.common.collect.Lists.newArrayList() );
 
         return folderTreeNodeVO;
+    }
+
+    @Override
+    public DriveHarborUserFileVO driveHarborUserFile2DriveHarborUserFileVO(driveHarborUserFile record) {
+        if ( record == null ) {
+            return null;
+        }
+
+        DriveHarborUserFileVO driveHarborUserFileVO = new DriveHarborUserFileVO();
+
+        driveHarborUserFileVO.setFileId( record.getFileId() );
+        driveHarborUserFileVO.setParentId( record.getParentId() );
+        driveHarborUserFileVO.setFileSizeDesc( record.getFileSizeDesc() );
+        driveHarborUserFileVO.setFolderFlag( record.getFolderFlag() );
+        driveHarborUserFileVO.setFileType( record.getFileType() );
+        driveHarborUserFileVO.setUpdateTime( record.getUpdateTime() );
+
+        return driveHarborUserFileVO;
     }
 }

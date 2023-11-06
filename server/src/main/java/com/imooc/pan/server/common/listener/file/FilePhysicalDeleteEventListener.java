@@ -51,7 +51,6 @@ public class FilePhysicalDeleteEventListener implements ApplicationContextAware 
     /**
      * file deletion in the trash can listener
      *  release the physical resource occupied by the physical files deleted
-     * 该执行器是一个资源释放器，释放被物理删除的文件列表中关联的实体文件记录
      * 1. query the physical records
      * 2. delete records
      * 3. delete physical files
@@ -59,7 +58,7 @@ public class FilePhysicalDeleteEventListener implements ApplicationContextAware 
      * @param event
      */
     @EventListener(classes = FilePhysicalDeleteEvent.class)
-//    @Async(value = "eventListenerTaskExecutor")
+    @Async(value = "eventListenerTaskExecutor")
     public void physicalDeleteFile(FilePhysicalDeleteEvent event) {
         List<driveHarborUserFile> allRecords = event.getAllRecords();
         if (CollectionUtils.isEmpty(allRecords)) {

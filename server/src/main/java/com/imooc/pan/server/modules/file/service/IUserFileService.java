@@ -71,4 +71,10 @@ public interface IUserFileService extends IService<driveHarborUserFile> {
     List<BreadcrumbVO> getBreadcrumbs(QueryBreadcrumbsContext context);
 
     List<driveHarborUserFile> findAllFileRecords(List<driveHarborUserFile> records);
+
+    List<driveHarborUserFile> findAllFileRecordsByFileIdList(List<Long> fileIdList);
+
+    List<DriveHarborUserFileVO> transferVOList(List<driveHarborUserFile> records);
+
+    void downloadWithoutCheckUser(FileDownloadContext context);
 }

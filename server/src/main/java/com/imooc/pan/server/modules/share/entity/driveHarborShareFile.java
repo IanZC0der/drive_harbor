@@ -25,25 +25,25 @@ public class driveHarborShareFile implements Serializable {
      * share id
      */
     @TableField(value = "share_id")
-    private Long share_id;
+    private Long shareId;
 
     /**
      * file id
      */
     @TableField(value = "file_id")
-    private Long file_id;
+    private Long fileId;
 
     /**
      * sharer
      */
     @TableField(value = "create_user")
-    private Long create_user;
+    private Long createUser;
 
     /**
      * share time
      */
     @TableField(value = "create_time")
-    private Date create_time;
+    private Date createTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

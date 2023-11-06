@@ -14,6 +14,11 @@
       "sourceType": "com.imooc.pan.server.common.config.HarborServerConfig"
     },
     {
+      "name": "com.imooc.pan.server.server-port",
+      "type": "java.lang.Integer",
+      "sourceType": "com.imooc.pan.server.common.config.HarborServerConfig"
+    },
+    {
       "name": "com.imooc.pan.server.share-prefix",
       "type": "java.lang.String",
       "description": "share link prefix",

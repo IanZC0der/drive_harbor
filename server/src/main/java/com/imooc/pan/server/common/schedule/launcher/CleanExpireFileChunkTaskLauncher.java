@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CleanExpireFileChunkTaskLauncher implements CommandLineRunner {
 
-//    private final static String CRON = "1 0 0 * * ? ";
-    private final static String CRON = "0/5 * * * * ? ";
+    private final static String CRON = "1 0 0 * * ? ";
+//    private final static String CRON = "0/5 * * * * ? ";
 
     @Autowired
     private CleanExpireChunkFileTask task;

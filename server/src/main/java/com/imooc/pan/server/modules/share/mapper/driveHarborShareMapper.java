@@ -2,6 +2,10 @@ package com.imooc.pan.server.modules.share.mapper;
 
 import com.imooc.pan.server.modules.share.entity.driveHarborShare;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.imooc.pan.server.modules.share.vo.DriveHarborShareUrlListVO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author benchi
@@ -11,6 +15,12 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface driveHarborShareMapper extends BaseMapper<driveHarborShare> {
 
+    /**
+     * query share list
+     * @param userId
+     * @return
+     */
+    List<DriveHarborShareUrlListVO> selectShareVOListByUserId(@Param("userId") Long userId);
 }
 
 
