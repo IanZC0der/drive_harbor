@@ -36,7 +36,7 @@ import java.util.Objects;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = driveHarborServerLauncher.class)
-@Transactional
+//@Transactional
 public class ShareTest {
     @Autowired
     private IUserFileService iUserFileService;
@@ -302,6 +302,19 @@ public class ShareTest {
         queryChildFileListContext.setParentId(userInfoVO.getRootFileId());
         List<DriveHarborUserFileVO> fileVOList = iShareService.fileList(queryChildFileListContext);
         Assert.notEmpty(fileVOList);
+    }
+
+    @Test
+    public void init() {
+        CreateShareUrlContext context = new CreateShareUrlContext();
+        context.setUserId(1721671944978939904L);
+        context.setShareType(ShareTypeEnum.NEED_SHARE_CODE.getCode());
+        context.setShareDayType(ShareDayTypeEnum.PERMANENT_VALIDITY.getCode());
+        context.setShareFileIdList(Lists.newArrayList(1721672975188082688L));
+        for (int i = 0; i < 10000000; i++) {
+            context.setShareName("share_test" + i);
+            iShareService.create(context);
+        }
     }
 
     /**

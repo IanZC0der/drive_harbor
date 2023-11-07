@@ -8,6 +8,7 @@ import com.imooc.pan.core.response.ResponseCode;
 import com.imooc.pan.core.utils.IdUtil;
 import com.imooc.pan.core.utils.JwtUtil;
 import com.imooc.pan.core.utils.PasswordUtil;
+import com.imooc.pan.server.common.cache.AnnotationCacheService;
 import com.imooc.pan.server.modules.file.constants.FileConstants;
 import com.imooc.pan.server.modules.file.context.CreateFolderContext;
 import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
@@ -18,15 +19,20 @@ import com.imooc.pan.server.modules.user.converter.UserConverter;
 import com.imooc.pan.server.modules.user.entity.driveHarborUser;
 import com.imooc.pan.server.modules.user.service.IUserService;
 import com.imooc.pan.server.modules.user.mapper.driveHarborUserMapper;
+import com.imooc.pan.server.modules.user.service.cache.UserCacheService;
 import com.imooc.pan.server.modules.user.vo.UserInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -42,6 +48,10 @@ public class UserServiceImpl extends ServiceImpl<driveHarborUserMapper, driveHar
     private IUserFileService iUserFileService;
     @Autowired
     private CacheManager cacheManager;
+
+    @Autowired
+    @Qualifier(value = "userAnnotationCacheService")
+    private AnnotationCacheService<driveHarborUser> cacheService;
 
     /**
      * 1. user info registration
@@ -164,7 +174,37 @@ public class UserServiceImpl extends ServiceImpl<driveHarborUserMapper, driveHar
 
     }
 
+    @Override
+    public boolean removeById(Serializable id) {
+        return cacheService.removeById(id);
+    }
 
+    @Override
+    public boolean removeByIds(Collection<? extends Serializable> idList) {
+        throw new driveHarborBusinessException("Batch removal not supported. Please change to manual cache.");
+    }
+
+    @Override
+    public boolean updateById(driveHarborUser entity) {
+//        return super.updateById(entity);
+        return cacheService.updateById(entity.getUserId(), entity);
+    }
+
+    @Override
+    public boolean updateBatchById(Collection<driveHarborUser> entityList) {
+        throw new driveHarborBusinessException("Batch update not supported. Please change to manual cache.");
+    }
+
+    @Override
+    public driveHarborUser getById(Serializable id) {
+//        return super.getById(id);
+        return cacheService.getById(id);
+    }
+
+    @Override
+    public List<driveHarborUser> listByIds(Collection<? extends Serializable> idList) {
+        throw new driveHarborBusinessException("Batch queries not supported. Please change to manual cache.");
+    }
 
     /**
      * get user root folder info

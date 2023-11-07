@@ -12,9 +12,6 @@ import org.springframework.stereotype.Component;
 public class HarborServerConfig {
 
 
-    @Value("${server.port}")
-    private Integer serverPort;
-
     /**
      * chunk file expiration days.
      * chunk will be expired.
@@ -24,6 +21,6 @@ public class HarborServerConfig {
     /**
      * share link prefix
      */
-    private String sharePrefix = "http://127.0.0.1:" + serverPort + "/share/";
+    private String sharePrefix = "http://127.0.0.1:8080/share/";
 
 }

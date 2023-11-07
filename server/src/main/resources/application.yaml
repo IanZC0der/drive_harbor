@@ -17,7 +17,7 @@ spring:
   datasource:
     username: root
     password: 12345678
-    url: jdbc:mysql://127.0.0.1:3306/r_pan?characterEncoding=utf8&serverTimeZone=America/Chicago&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://127.0.0.1:3306/r_pan?characterEncoding=utf8&serverTimeZone=UTC&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 mybatis-plus:
@@ -72,4 +72,8 @@ logging:
 #            endpoint: oss-us-east-1.aliyuncs.com
 #            access-key-id: LTAI5tH3TMdoWtXTXv6CZ8xu
 #            access-key-secret: gAaG2PbsX4uub7vofD6yN4ILmuEDmS
-#            auto-create-bucket: true
+com:
+  imooc:
+    pan:
+      server:
+        share-prefix: http://127.0.0.1:5173

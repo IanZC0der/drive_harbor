@@ -13,6 +13,7 @@ import com.imooc.pan.core.response.ResponseCode;
 import com.imooc.pan.core.utils.IdUtil;
 import com.imooc.pan.core.utils.JwtUtil;
 import com.imooc.pan.core.utils.UUIDUtil;
+import com.imooc.pan.server.common.cache.ManualCacheService;
 import com.imooc.pan.server.common.config.HarborServerConfig;
 import com.imooc.pan.server.common.event.log.ErrorLogEvent;
 import com.imooc.pan.server.modules.file.constants.FileConstants;
@@ -39,11 +40,14 @@ import com.imooc.pan.server.modules.user.service.IUserService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -67,6 +71,10 @@ public class ShareServiceImpl extends ServiceImpl<driveHarborShareMapper, driveH
 
     @Autowired
     private IUserFileService iUserFileService;
+
+    @Autowired
+    @Qualifier(value = "shareManualCacheService")
+    private ManualCacheService<driveHarborShare> cacheService;
 
     private ApplicationContext applicationContext;
     @Override
@@ -235,6 +243,42 @@ public class ShareServiceImpl extends ServiceImpl<driveHarborShareMapper, driveH
 
     }
 
+    @Override
+    public boolean removeById(Serializable id) {
+        return cacheService.removeById(id);
+    }
+
+    @Override
+    public boolean removeByIds(Collection<? extends Serializable> idList) {
+        return cacheService.removeByIds(idList);
+    }
+
+    @Override
+    public boolean updateById(driveHarborShare entity) {
+        return cacheService.updateById(entity.getShareId(), entity);
+    }
+
+    @Override
+    public boolean updateBatchById(Collection<driveHarborShare> entityList) {
+        if(CollectionUtils.isEmpty(entityList)){
+            return true;
+        }
+        Map<Long, driveHarborShare> entityMap = entityList.stream().collect(Collectors.toMap(driveHarborShare::getShareId, e -> e));
+        return cacheService.updateByIds(entityMap);
+    }
+
+    @Override
+    public driveHarborShare getById(Serializable id) {
+//        return super.getById(id);
+        return cacheService.getById(id);
+    }
+
+    @Override
+    public List<driveHarborShare> listByIds(Collection<? extends Serializable> idList) {
+//        return super.listByIds(idList);
+        return cacheService.getByIds(idList);
+    }
+
     private void refreshOneShareStatus(Long shareId) {
         driveHarborShare record = getById(shareId);
         if (Objects.isNull(record)) {
@@ -250,15 +294,13 @@ public class ShareServiceImpl extends ServiceImpl<driveHarborShareMapper, driveH
             return;
         }
 
-        doChangeShareStatus(shareId, shareStatus);
+        doChangeShareStatus(record, shareStatus);
     }
 
-    private void doChangeShareStatus(Long shareId, ShareStatusEnum shareStatus) {
-        UpdateWrapper updateWrapper = Wrappers.update();
-        updateWrapper.eq("share_id", shareId);
-        updateWrapper.set("share_status", shareStatus.getCode());
-        if(!update(updateWrapper)){
-            applicationContext.publishEvent(new ErrorLogEvent(this, "Update share status failure, share ID: " + shareId + ", share status to be changed to: "+shareStatus.getCode(), driveHarborConstants.ZERO_LONG));
+    private void doChangeShareStatus(driveHarborShare record, ShareStatusEnum shareStatus) {
+        record.setShareStatus(record.getShareStatus());
+        if(!updateById(record)){
+            applicationContext.publishEvent(new ErrorLogEvent(this, "Update share status failure, share ID: " + record.getShareId() + ", share status to be changed to: "+shareStatus.getCode(), driveHarborConstants.ZERO_LONG));
 
         }
 
@@ -593,7 +635,7 @@ public class ShareServiceImpl extends ServiceImpl<driveHarborShareMapper, driveH
         if (!sharePrefix.endsWith(driveHarborConstants.SLASH_STR)) {
             sharePrefix += driveHarborConstants.SLASH_STR;
         }
-        return sharePrefix + shareId;
+        return sharePrefix + URLEncoder.encode(IdUtil.encrypt(shareId));
     }
 
     /**
