@@ -5,24 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.imooc.pan</groupId>
-        <artifactId>r-pan-parent</artifactId>
+        <artifactId>r-pan-framework</artifactId>
         <version>1.0</version>
     </parent>
 
-    <artifactId>r-pan-framework</artifactId>
+    <artifactId>r-pan-bloom-filter</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>core</module>
-        <module>web</module>
-        <module>swagger2</module>
-        <module>orm</module>
-<!--        <module>orm/mybatis-plus</module>-->
-        <module>cache</module>
-        <module>schedule</module>
-        <module>storage-engine</module>
-        <module>bloom-filter</module>
-        <module>bloom-filter/bloom-filter-local</module>
+        <module>bloom-filter-core</module>
     </modules>
 
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 </project>

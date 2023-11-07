@@ -2,6 +2,10 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/distribution/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/bloom-filter/bloom-filter-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/bloom-filter/bloom-filter-local/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/bloom-filter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/bloom-filter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/cache/cache-caffeine/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/cache/cache-core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/cache/cache-redis/src/main/java" charset="UTF-8" />
