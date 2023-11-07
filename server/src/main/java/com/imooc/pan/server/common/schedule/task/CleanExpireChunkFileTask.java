@@ -1,4 +1,4 @@
-package com.imooc.pan.server.common.task;
+package com.imooc.pan.server.common.schedule.task;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

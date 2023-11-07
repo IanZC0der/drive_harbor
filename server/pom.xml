@@ -59,6 +59,11 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>com.imooc.pan</groupId>
+            <artifactId>r-pan-bloom-filter-local</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>r-pan-server</finalName>

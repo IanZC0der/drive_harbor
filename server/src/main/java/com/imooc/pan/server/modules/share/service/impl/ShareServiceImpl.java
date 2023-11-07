@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.imooc.pan.bloom.filter.core.BloomFilter;
+import com.imooc.pan.bloom.filter.core.BloomFilterManager;
 import com.imooc.pan.core.constants.driveHarborConstants;
 import com.imooc.pan.core.exception.driveHarborBusinessException;
 import com.imooc.pan.core.response.ResponseCode;
@@ -37,6 +39,7 @@ import com.imooc.pan.server.modules.share.mapper.driveHarborShareMapper;
 import com.imooc.pan.server.modules.share.vo.*;
 import com.imooc.pan.server.modules.user.entity.driveHarborUser;
 import com.imooc.pan.server.modules.user.service.IUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +60,7 @@ import java.util.stream.Collectors;
 * @createDate 2023-10-23 21:08:08
 */
 @Service
+@Slf4j
 public class ShareServiceImpl extends ServiceImpl<driveHarborShareMapper, driveHarborShare>
     implements IShareService, ApplicationContextAware {
     @Autowired
@@ -76,6 +80,11 @@ public class ShareServiceImpl extends ServiceImpl<driveHarborShareMapper, driveH
     @Qualifier(value = "shareManualCacheService")
     private ManualCacheService<driveHarborShare> cacheService;
 
+    @Autowired
+    private BloomFilterManager manager;
+
+
+    private static final String BLOOM_FILTER_NAME = "SHARE_SIMPLE_DETAIL";
     private ApplicationContext applicationContext;
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -97,9 +106,12 @@ public class ShareServiceImpl extends ServiceImpl<driveHarborShareMapper, driveH
     public DriveHarborShareUrlVO create(CreateShareUrlContext context) {
         saveShare(context);
         saveShareFiles(context);
-        return assembleShareVO(context);
+        DriveHarborShareUrlVO vo = assembleShareVO(context);
+        afterCreate(context, vo);
+        return vo;
 
     }
+
 
     /**
      * query share list
@@ -244,6 +256,13 @@ public class ShareServiceImpl extends ServiceImpl<driveHarborShareMapper, driveH
     }
 
     @Override
+    public List<Long> rollingQueryShareId(long startId, long limit) {
+
+        return baseMapper.rollingQueryShareId(startId, limit);
+
+    }
+
+    @Override
     public boolean removeById(Serializable id) {
         return cacheService.removeById(id);
     }
@@ -277,6 +296,14 @@ public class ShareServiceImpl extends ServiceImpl<driveHarborShareMapper, driveH
     public List<driveHarborShare> listByIds(Collection<? extends Serializable> idList) {
 //        return super.listByIds(idList);
         return cacheService.getByIds(idList);
+    }
+    private void afterCreate(CreateShareUrlContext context, DriveHarborShareUrlVO vo) {
+        BloomFilter<Long> bloomFilter = manager.getFilter(BLOOM_FILTER_NAME);
+        if (Objects.nonNull(bloomFilter)) {
+            bloomFilter.put(context.getRecord().getShareId());
+            log.info("created share, added share id to bloom filter, share id is {}", context.getRecord().getShareId());
+        }
+
     }
 
     private void refreshOneShareStatus(Long shareId) {

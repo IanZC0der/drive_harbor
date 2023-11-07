@@ -39,4 +39,12 @@ public interface IShareService extends IService<driveHarborShare> {
     void download(ShareFileDownloadContext context);
 
     void refreshShareStatus(List<Long> allAvailableFileIdList);
+
+    /**
+     * rolling query share id
+     * @param startId
+     * @param limit
+     * @return
+     */
+    List<Long> rollingQueryShareId(long startId, long limit);
 }

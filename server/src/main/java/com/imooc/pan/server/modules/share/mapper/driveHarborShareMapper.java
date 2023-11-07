@@ -21,6 +21,14 @@ public interface driveHarborShareMapper extends BaseMapper<driveHarborShare> {
      * @return
      */
     List<DriveHarborShareUrlListVO> selectShareVOListByUserId(@Param("userId") Long userId);
+
+    /**
+     * rolling query share id
+     * @param startId
+     * @param limit
+     * @return
+     */
+    List<Long> rollingQueryShareId(@Param("startId") long startId, @Param("limit") long limit);
 }
 
 

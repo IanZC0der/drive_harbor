@@ -41,4 +41,13 @@
         WHERE
             create_user = #{userId}
     </select>
+    <select id="rollingQueryShareId" resultType="java.lang.Long">
+        SELECT
+            share_id
+        FROM
+            r_pan_share
+        WHERE share_id > #{startId}
+        ORDER BY share_id ASC
+        LIMIT #{limit}
+    </select>
 </mapper>

@@ -77,3 +77,11 @@ com:
     pan:
       server:
         share-prefix: http://127.0.0.1:5173
+      bloom:
+        filter:
+          local:
+            items:
+              - name: SHARE_SIMPLE_DETAIL
+                funnel-type-name: LONG
+                expected-insertions: 10000000
+                fpp: 0.01
