@@ -9,8 +9,9 @@ import com.google.common.collect.Lists;
 import com.imooc.pan.core.constants.driveHarborConstants;
 import com.imooc.pan.core.exception.driveHarborBusinessException;
 import com.imooc.pan.core.utils.FileUtil;
-import com.imooc.pan.server.common.event.event.UserSearchEvent;
-import com.imooc.pan.server.common.event.file.DeleteFileEvent;
+import com.imooc.pan.server.common.stream.channel.DriveHarborChannels;
+import com.imooc.pan.server.common.stream.event.search.UserSearchEvent;
+import com.imooc.pan.server.common.stream.event.file.DeleteFileEvent;
 import com.imooc.pan.server.common.utils.HttpUtil;
 import com.imooc.pan.server.modules.file.context.*;
 import com.imooc.pan.server.modules.file.converter.FileConverter;
@@ -23,11 +24,12 @@ import com.imooc.pan.server.modules.file.service.IFileService;
 import com.imooc.pan.server.modules.file.service.IUserFileService;
 import com.imooc.pan.server.modules.file.mapper.driverHarborUserFileMapper;
 import com.imooc.pan.server.modules.file.vo.*;
-import com.imooc.pan.storage.engine.core.AbstractStorageEngine;
 import com.imooc.pan.storage.engine.core.StorageEngine;
 import com.imooc.pan.storage.engine.core.context.ReadFileContext;
+import com.imooc.pan.stream.core.IStreamProducer;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.http.MediaType;
@@ -49,9 +51,11 @@ import java.util.stream.Collectors;
 * @createDate 2023-10-23 21:04:43
 */
 @Service(value = "userFileService")
-public class UserFileServiceImpl extends ServiceImpl<driverHarborUserFileMapper, driveHarborUserFile> implements IUserFileService, ApplicationContextAware {
+public class UserFileServiceImpl extends ServiceImpl<driverHarborUserFileMapper, driveHarborUserFile> implements IUserFileService{
+    @Autowired
+    @Qualifier(value = "defaultStreamProducer")
+    private IStreamProducer producer;
 
-    private ApplicationContext applicationContext;
 
     @Autowired
     private IFileService iFileService;
@@ -64,10 +68,6 @@ public class UserFileServiceImpl extends ServiceImpl<driverHarborUserFileMapper,
     @Autowired
     private StorageEngine storageEngine;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
 
     @Override
     public Long createFolder(CreateFolderContext createFolderContext) {
@@ -407,8 +407,8 @@ public class UserFileServiceImpl extends ServiceImpl<driverHarborUserFileMapper,
      * @param context
      */
     private void afterSearch(FileSearchContext context) {
-        UserSearchEvent event = new UserSearchEvent(this, context.getKeyword(), context.getUserId());
-        applicationContext.publishEvent(event);
+        UserSearchEvent event = new UserSearchEvent(context.getKeyword(), context.getUserId());
+        producer.sendMessage(DriveHarborChannels.USER_SEARCH_OUTPUT, event);
     }
 
 
@@ -955,8 +955,8 @@ public class UserFileServiceImpl extends ServiceImpl<driverHarborUserFileMapper,
      * @param context
      */
     private void afterFileDelete(DeleteFileContext context) {
-        DeleteFileEvent deleteFileEvent = new DeleteFileEvent(this, context.getFileIdList());
-        applicationContext.publishEvent(deleteFileEvent);
+        DeleteFileEvent deleteFileEvent = new DeleteFileEvent(context.getFileIdList());
+        producer.sendMessage(DriveHarborChannels.DELETE_FILE_OUTPUT, deleteFileEvent);
     }
 
     /**

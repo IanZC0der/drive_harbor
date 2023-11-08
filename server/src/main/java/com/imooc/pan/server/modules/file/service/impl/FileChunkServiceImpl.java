@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.pan.core.exception.driveHarborBusinessException;
 import com.imooc.pan.core.utils.IdUtil;
+import com.imooc.pan.lock.core.annotation.Lock;
 import com.imooc.pan.server.common.config.HarborServerConfig;
 import com.imooc.pan.server.modules.file.context.FileChunkSaveContext;
 import com.imooc.pan.server.modules.file.converter.FileConverter;
@@ -44,8 +45,9 @@ public class FileChunkServiceImpl extends ServiceImpl<driveHarborFileChunkMapper
      * 2. check if all the chunks are uploaded
      * @param context
      */
+    @Lock(name = "saveChunkFileLock", keys = {"#context.userId","#context.identifier"}, expireSecond = 10L)
     @Override
-    public synchronized void saveChunkFile(FileChunkSaveContext context) {
+    public void saveChunkFile(FileChunkSaveContext context) {
         doSaveChunkFile(context);
         doJudgeMergeFile(context);
 

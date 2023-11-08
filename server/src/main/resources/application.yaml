@@ -1,7 +1,7 @@
 spring:
-  redis:
-    database: 1
-    host: 127.0.0.1
+#  redis:
+#    database: 1
+#    host: 127.0.0.1
   application:
     name: r-pan-server
   output:
@@ -19,12 +19,49 @@ spring:
     password: 12345678
     url: jdbc:mysql://127.0.0.1:3306/r_pan?characterEncoding=utf8&serverTimeZone=UTC&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    stream:
+      rocketmq:
+        binder:
+          name-server: localhost:9876
+      bindings:
+        testInput:
+          destination: testTopic
+          group: testTopicGroup1
+        testOutput:
+          destination: testTopic
+        errorLogInput:
+          destination: errorLogTopic
+          group: errorLogGroup
+        deleteFileInput:
+          destination: deleteFileTopic
+          group: deleteFileGroup
+        fileRestoreInput:
+          destination: fileRestoreTopic
+          group: fileRestoreGroup
+        physicalDeleteFileInput:
+          destination: physicalDeleteFileTopic
+          group: physicalDeleteFileGroup
+        userSearchInput:
+          destination: userSearchTopic
+          group: userSearchGroup
+        errorLogOutput:
+          destination: errorLogTopic
+        deleteFileOutput:
+          destination: deleteFileTopic
+        fileRestoreOutput:
+          destination: fileRestoreTopic
+        physicalDeleteFileOutput:
+          destination: physicalDeleteFileTopic
+        userSearchOutput:
+          destination: userSearchTopic
+
 
 mybatis-plus:
   mapper-locations: classpath:mappers/**/*/*.xml
 
 server:
-  port: 8080
+  port: 8082
 
 management:
   endpoints:
@@ -75,8 +112,15 @@ logging:
 com:
   imooc:
     pan:
+#      storage:
+#        engine:
+#          oss:
+#            bucket-name: driveharbor-testt
+#            endpoint: oss-us-east-1.aliyuncs.com
+#            access-key-id: LTAI5tH3TMdoWtXTXv6CZ8xu
+#            access-key-secret: gAaG2PbsX4uub7vofD6yN4ILmuEDmS
       server:
-        share-prefix: http://127.0.0.1:5173
+        share-prefix: http://127.0.0.1:5173/
       bloom:
         filter:
           local:

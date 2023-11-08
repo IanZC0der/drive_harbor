@@ -14,13 +14,16 @@
         <module name="r-pan-cache-redis" />
         <module name="r-pan-storage-engine-local" />
         <module name="r-pan-cache-caffeine" />
+        <module name="r-pan-stream-rocketmq" />
         <module name="r-pan-schedule" />
         <module name="r-pan-distribution" />
         <module name="r-pan-storage-engine-fastdfs" />
+        <module name="r-pan-stream-core" />
         <module name="r-pan-bloom-filter-local" />
         <module name="r-pan-core" />
         <module name="r-pan-storage-engine-core" />
         <module name="r-pan-lock-local" />
+        <module name="r-pan-lock-redis" />
         <module name="r-pan-mybatis-plus" />
         <module name="r-pan-web" />
         <module name="r-pan-lock-core" />
@@ -59,6 +62,7 @@
       <module name="r-pan-lock" options="-parameters" />
       <module name="r-pan-lock-core" options="-parameters" />
       <module name="r-pan-lock-local" options="-parameters" />
+      <module name="r-pan-lock-redis" options="-parameters" />
       <module name="r-pan-mybatis-plus" options="-parameters" />
       <module name="r-pan-orm" options="-parameters" />
       <module name="r-pan-parent" options="-parameters" />
@@ -70,6 +74,9 @@
       <module name="r-pan-storage-engine-gcs" options="-parameters" />
       <module name="r-pan-storage-engine-local" options="-parameters" />
       <module name="r-pan-storage-engine-oss" options="-parameters" />
+      <module name="r-pan-stream" options="-parameters" />
+      <module name="r-pan-stream-core" options="-parameters" />
+      <module name="r-pan-stream-rocketmq" options="-parameters" />
       <module name="r-pan-swagger2" options="-parameters" />
       <module name="r-pan-web" options="-parameters" />
     </option>

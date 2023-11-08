@@ -11,6 +11,7 @@ import com.imooc.pan.core.constants.driveHarborConstants;
 import com.imooc.pan.core.exception.driveHarborFrameworkException;
 import com.imooc.pan.core.utils.FileUtil;
 import com.imooc.pan.core.utils.UUIDUtil;
+import com.imooc.pan.lock.core.annotation.Lock;
 import com.imooc.pan.storage.engine.core.AbstractStorageEngine;
 import com.imooc.pan.storage.engine.core.context.*;
 import com.imooc.pan.storage.engine.oss.config.OssStorageEngineConfig;
@@ -117,8 +118,9 @@ public class OSSStorageEngine extends AbstractStorageEngine {
      * @param context
      * @throws IOException
      */
+    @Lock(name = "ossDoStoreChunkLock", keys = {"#context.userId","#context.identifier"}, expireSecond = 10L)
     @Override
-    protected synchronized void doStoreChunk(StoreFileChunkContext context) throws IOException {
+    protected void doStoreChunk(StoreFileChunkContext context) throws IOException {
 
         if (context.getTotalChunks() > TEN_THOUSAND_INT) {
             throw new driveHarborFrameworkException("The number of chunks should not be more than ： " + TEN_THOUSAND_INT);

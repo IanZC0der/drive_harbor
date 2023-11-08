@@ -7,7 +7,8 @@ import com.google.common.collect.Lists;
 import com.imooc.pan.core.exception.driveHarborBusinessException;
 import com.imooc.pan.core.utils.FileUtil;
 import com.imooc.pan.core.utils.IdUtil;
-import com.imooc.pan.server.common.event.log.ErrorLogEvent;
+import com.imooc.pan.server.common.stream.channel.DriveHarborChannels;
+import com.imooc.pan.server.common.stream.event.log.ErrorLogEvent;
 import com.imooc.pan.server.modules.file.context.FileChunkMergeAndSaveContext;
 import com.imooc.pan.server.modules.file.entity.driveHarborFileChunk;
 import com.imooc.pan.server.modules.file.service.IFileChunkService;
@@ -19,8 +20,10 @@ import com.imooc.pan.server.modules.file.context.FileSaveContext;
 import com.imooc.pan.storage.engine.core.StorageEngine;
 import com.imooc.pan.storage.engine.core.context.MergeFileContext;
 import com.imooc.pan.storage.engine.core.context.StoreFileContext;
+import com.imooc.pan.stream.core.IStreamProducer;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
@@ -38,20 +41,19 @@ import java.util.stream.Collectors;
 */
 @Service
 public class IFileServiceImpl extends ServiceImpl<driveHarborFileMapper, driveHarborFile>
-    implements IFileService, ApplicationContextAware {
+    implements IFileService{
 
     @Autowired
     private StorageEngine storageEngine;
 
-    private ApplicationContext applicationContext;
 
     @Autowired
     private IFileChunkService iFileChunkService;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
+    @Autowired
+    @Qualifier(value = "defaultStreamProducer")
+    private IStreamProducer producer;
+
 
     /**
      * 1. uplad file
@@ -142,8 +144,8 @@ public class IFileServiceImpl extends ServiceImpl<driveHarborFileMapper, driveHa
                 storageEngine.delete(deleteFileContext);
             } catch (IOException e) {
                 e.printStackTrace();
-                ErrorLogEvent errorLogEvent = new ErrorLogEvent(this, "文件物理删除失败，请执行手动删除！文件路径: " + realPath, userId);
-                applicationContext.publishEvent(errorLogEvent);
+                ErrorLogEvent errorLogEvent = new ErrorLogEvent("Physical deletion failure, please manually delete, path: " + realPath, userId);
+                producer.sendMessage(DriveHarborChannels.ERROR_LOG_OUTPUT, errorLogEvent);
             }
         }
         return record;

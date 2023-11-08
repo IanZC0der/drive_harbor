@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.imooc.pan.core.constants.driveHarborConstants;
 import com.imooc.pan.schedule.ScheduleTask;
-import com.imooc.pan.server.common.event.log.ErrorLogEvent;
+import com.imooc.pan.server.common.stream.channel.DriveHarborChannels;
+import com.imooc.pan.server.common.stream.event.log.ErrorLogEvent;
+import com.imooc.pan.stream.core.IStreamProducer;
 import com.imooc.pan.server.modules.file.entity.driveHarborFileChunk;
 import com.imooc.pan.server.modules.file.service.IFileChunkService;
 import com.imooc.pan.storage.engine.core.StorageEngine;
@@ -26,7 +28,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class CleanExpireChunkFileTask implements ScheduleTask, ApplicationContextAware {
+public class CleanExpireChunkFileTask implements ScheduleTask{
     private static final Long BATCH_SIZE = 500L;
 
     @Autowired
@@ -35,12 +37,11 @@ public class CleanExpireChunkFileTask implements ScheduleTask, ApplicationContex
     @Autowired
     private StorageEngine storageEngine;
 
-    private ApplicationContext applicationContext;
+    @Autowired
+    @Qualifier(value = "defaultStreamProducer")
+    private IStreamProducer producer;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext){
-        this.applicationContext = applicationContext;
-    }
+
 
     /**
      * get task name
@@ -115,8 +116,8 @@ public class CleanExpireChunkFileTask implements ScheduleTask, ApplicationContex
      * @param realPaths
      */
     private void saveErrorLog(List<String> realPaths) {
-        ErrorLogEvent event = new ErrorLogEvent(this, "File deletation failture. Please manully remove the file chunks. The path is：" + JSON.toJSONString(realPaths), driveHarborConstants.ZERO_LONG);
-        applicationContext.publishEvent(event);
+        ErrorLogEvent event = new ErrorLogEvent("File deletation failture. Please manully remove the file chunks. The path is：" + JSON.toJSONString(realPaths), driveHarborConstants.ZERO_LONG);
+        producer.sendMessage(DriveHarborChannels.ERROR_LOG_OUTPUT, event);
     }
 
     /**

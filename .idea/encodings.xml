@@ -15,6 +15,7 @@
     <file url="file://$PROJECT_DIR$/framework/core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/lock/lock-core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/lock/lock-local/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/lock/lock-redis/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/lock/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/lock/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/orm/mybatis-plus/src/main/java" charset="UTF-8" />
@@ -30,6 +31,10 @@
     <file url="file://$PROJECT_DIR$/framework/storage-engine/storage-engine-gcs/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/storage-engine/storage-engine-local/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/storage-engine/storage-engine-oss/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/stream/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/stream/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/stream/stream-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework/stream/stream-rocketmq/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/swagger2/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/framework/web/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/server/src/main/java" charset="UTF-8" />

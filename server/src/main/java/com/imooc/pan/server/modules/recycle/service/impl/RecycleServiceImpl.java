@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.imooc.pan.core.constants.driveHarborConstants;
 import com.imooc.pan.core.exception.driveHarborBusinessException;
-import com.imooc.pan.server.common.event.file.FilePhysicalDeleteEvent;
-import com.imooc.pan.server.common.event.file.FileRestoreEvent;
+import com.imooc.pan.server.common.stream.channel.DriveHarborChannels;
+import com.imooc.pan.server.common.stream.event.file.FilePhysicalDeleteEvent;
+import com.imooc.pan.server.common.stream.event.file.FileRestoreEvent;
 import com.imooc.pan.server.modules.file.context.QueryFileListContext;
 import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
 import com.imooc.pan.server.modules.file.enums.DelFlagEnum;
@@ -15,9 +16,11 @@ import com.imooc.pan.server.modules.recycle.context.DeleteContext;
 import com.imooc.pan.server.modules.recycle.context.QueryRecycleFileListContext;
 import com.imooc.pan.server.modules.recycle.context.RestoreContext;
 import com.imooc.pan.server.modules.recycle.service.IRecycleService;
+import com.imooc.pan.stream.core.IStreamProducer;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
@@ -28,11 +31,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class RecycleServiceImpl implements IRecycleService, ApplicationContextAware {
+public class RecycleServiceImpl implements IRecycleService{
     @Autowired
     private IUserFileService iUserFileService;
 
-    private ApplicationContext applicationContext;
+    @Autowired
+    @Qualifier(value = "defaultStreamProducer")
+    private IStreamProducer producer;
+
 
     /**
      * query the file list in the trash can
@@ -82,8 +88,8 @@ public class RecycleServiceImpl implements IRecycleService, ApplicationContextAw
      * @param context
      */
     private void afterDelete(DeleteContext context) {
-        FilePhysicalDeleteEvent event = new FilePhysicalDeleteEvent(this, context.getAllRecords());
-        applicationContext.publishEvent(event);
+        FilePhysicalDeleteEvent event = new FilePhysicalDeleteEvent(context.getAllRecords());
+        producer.sendMessage(DriveHarborChannels.PHYSICAL_DELETE_FILE_OUTPUT, event);
 
     }
 
@@ -125,8 +131,9 @@ public class RecycleServiceImpl implements IRecycleService, ApplicationContextAw
      * @param context
      */
     private void afterRestore(RestoreContext context) {
-        FileRestoreEvent event = new FileRestoreEvent(this, context.getFileIdList());
-        applicationContext.publishEvent(event);
+        FileRestoreEvent event = new FileRestoreEvent(context.getFileIdList());
+        producer.sendMessage(DriveHarborChannels.FILE_RESTORE_OUTPUT, event);
+
     }
 
     private void doRestore(RestoreContext context) {
@@ -189,9 +196,4 @@ public class RecycleServiceImpl implements IRecycleService, ApplicationContextAw
         context.setRecords(records);
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-
-    }
 }

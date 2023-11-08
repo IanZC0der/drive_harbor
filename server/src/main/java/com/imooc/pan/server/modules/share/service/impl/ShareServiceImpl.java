@@ -17,7 +17,8 @@ import com.imooc.pan.core.utils.JwtUtil;
 import com.imooc.pan.core.utils.UUIDUtil;
 import com.imooc.pan.server.common.cache.ManualCacheService;
 import com.imooc.pan.server.common.config.HarborServerConfig;
-import com.imooc.pan.server.common.event.log.ErrorLogEvent;
+import com.imooc.pan.server.common.stream.channel.DriveHarborChannels;
+import com.imooc.pan.server.common.stream.event.log.ErrorLogEvent;
 import com.imooc.pan.server.modules.file.constants.FileConstants;
 import com.imooc.pan.server.modules.file.context.CopyFileContext;
 import com.imooc.pan.server.modules.file.context.FileDownloadContext;
@@ -39,6 +40,7 @@ import com.imooc.pan.server.modules.share.mapper.driveHarborShareMapper;
 import com.imooc.pan.server.modules.share.vo.*;
 import com.imooc.pan.server.modules.user.entity.driveHarborUser;
 import com.imooc.pan.server.modules.user.service.IUserService;
+import com.imooc.pan.stream.core.IStreamProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -62,7 +64,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ShareServiceImpl extends ServiceImpl<driveHarborShareMapper, driveHarborShare>
-    implements IShareService, ApplicationContextAware {
+    implements IShareService{
     @Autowired
     private HarborServerConfig config;
 
@@ -83,13 +85,13 @@ public class ShareServiceImpl extends ServiceImpl<driveHarborShareMapper, driveH
     @Autowired
     private BloomFilterManager manager;
 
+    @Autowired
+    @Qualifier(value = "defaultStreamProducer")
+    private IStreamProducer producer;
+
+
 
     private static final String BLOOM_FILTER_NAME = "SHARE_SIMPLE_DETAIL";
-    private ApplicationContext applicationContext;
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
 
 
 
@@ -327,7 +329,7 @@ public class ShareServiceImpl extends ServiceImpl<driveHarborShareMapper, driveH
     private void doChangeShareStatus(driveHarborShare record, ShareStatusEnum shareStatus) {
         record.setShareStatus(record.getShareStatus());
         if(!updateById(record)){
-            applicationContext.publishEvent(new ErrorLogEvent(this, "Update share status failure, share ID: " + record.getShareId() + ", share status to be changed to: "+shareStatus.getCode(), driveHarborConstants.ZERO_LONG));
+            producer.sendMessage(DriveHarborChannels.ERROR_LOG_OUTPUT,new ErrorLogEvent("Update share status failure, share ID: " + record.getShareId() + ", share status to be changed to: "+shareStatus.getCode(), driveHarborConstants.ZERO_LONG));
 
         }
 
