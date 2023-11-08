@@ -22,6 +22,7 @@
         <module>storage-engine</module>
         <module>bloom-filter</module>
         <module>bloom-filter/bloom-filter-local</module>
+        <module>lock</module>
     </modules>
 
 
