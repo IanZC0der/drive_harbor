@@ -1,9 +1,6 @@
 package com.imooc.pan.server.common.stream.event.file;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.context.ApplicationEvent;
 
 import java.io.Serializable;
@@ -16,6 +13,7 @@ import java.util.List;
 @ToString
 @Getter
 @Setter
+@NoArgsConstructor
 public class FileRestoreEvent implements Serializable {
     private static final long serialVersionUID = -5823524176954356392L;
 

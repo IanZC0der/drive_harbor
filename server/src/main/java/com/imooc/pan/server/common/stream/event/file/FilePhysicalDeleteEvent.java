@@ -1,10 +1,7 @@
 package com.imooc.pan.server.common.stream.event.file;
 
 import com.imooc.pan.server.modules.file.entity.driveHarborUserFile;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.context.ApplicationEvent;
 
 import java.io.Serializable;
@@ -17,6 +14,7 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 public class FilePhysicalDeleteEvent implements Serializable {
     private static final long serialVersionUID = 3959988542308316628L;
     /**

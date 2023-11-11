@@ -16,4 +16,16 @@
         id,user_id,search_content,
         create_time,update_time
     </sql>
+    <select id="selectUserSearchHistories"
+            resultType="com.imooc.pan.server.modules.user.vo.UserSearchHistoryVO">
+        SELECT
+            search_content
+        AS `value`
+        FROM
+            r_pan_user_search_history
+        WHERE
+            user_id = #{param.userId}
+        ORDER BY
+            update_time DESC LIMIT 10
+    </select>
 </mapper>

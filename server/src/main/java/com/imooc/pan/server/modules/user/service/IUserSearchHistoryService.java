@@ -1,7 +1,11 @@
 package com.imooc.pan.server.modules.user.service;
 
+import com.imooc.pan.server.modules.user.context.QueryUserSearchHistoryContext;
 import com.imooc.pan.server.modules.user.entity.driveHarborUserSearchHistory;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.imooc.pan.server.modules.user.vo.UserSearchHistoryVO;
+
+import java.util.List;
 
 /**
 * @author benchi
@@ -10,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface IUserSearchHistoryService extends IService<driveHarborUserSearchHistory> {
 
+    List<UserSearchHistoryVO> getUserSearchHistories(QueryUserSearchHistoryContext context);
 }

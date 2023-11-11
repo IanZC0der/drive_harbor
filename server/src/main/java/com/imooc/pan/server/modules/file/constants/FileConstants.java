@@ -12,7 +12,7 @@ public interface FileConstants {
     /**
      * roor folder id
      */
-    String ALL_FILE_STR = "ALL_FILES";
+    String ALL_FILE_STR = "All";
     String LEFT_PARENTHESES_STR = "(";
 
     String RIGHT_PARENTHESES_STR = ")";

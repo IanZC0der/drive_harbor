@@ -1,7 +1,7 @@
 spring:
-#  redis:
-#    database: 1
-#    host: 127.0.0.1
+  redis:
+    database: 1
+    host: 127.0.0.1
   application:
     name: r-pan-server
   output:
@@ -23,7 +23,7 @@ spring:
     stream:
       rocketmq:
         binder:
-          name-server: localhost:9876
+          name-server: 127.0.0.1:9876
       bindings:
         testInput:
           destination: testTopic
@@ -72,7 +72,7 @@ management:
 
 
 swagger2:
-  show: true
+  show: false
   group-name: ${spring.application.name}
   base-package: com.imooc.pan
   title: r-pan-server docs
@@ -107,8 +107,6 @@ logging:
 #          oss:
 #            bucket-name: driveharbor-testt
 #            endpoint: oss-us-east-1.aliyuncs.com
-#            access-key-id: LTAI5tH3TMdoWtXTXv6CZ8xu
-#            access-key-secret: gAaG2PbsX4uub7vofD6yN4ILmuEDmS
 com:
   imooc:
     pan:
@@ -120,7 +118,7 @@ com:
 #            access-key-id: LTAI5tH3TMdoWtXTXv6CZ8xu
 #            access-key-secret: gAaG2PbsX4uub7vofD6yN4ILmuEDmS
       server:
-        share-prefix: http://127.0.0.1:5173/
+        share-prefix: https://driveharbor.com/share/
       bloom:
         filter:
           local:

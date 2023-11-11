@@ -35,16 +35,16 @@
             <artifactId>r-pan-schedule</artifactId>
             <version>1.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.imooc.pan</groupId>
-            <artifactId>r-pan-cache-caffeine</artifactId>
-            <version>1.0</version>
-        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.imooc.pan</groupId>-->
-<!--            <artifactId>r-pan-cache-redis</artifactId>-->
+<!--            <artifactId>r-pan-cache-caffeine</artifactId>-->
 <!--            <version>1.0</version>-->
 <!--        </dependency>-->
+        <dependency>
+            <groupId>com.imooc.pan</groupId>
+            <artifactId>r-pan-cache-redis</artifactId>
+            <version>1.0</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
@@ -69,16 +69,16 @@
             <artifactId>r-pan-bloom-filter-local</artifactId>
             <version>1.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.imooc.pan</groupId>
-            <artifactId>r-pan-lock-local</artifactId>
-            <version>1.0</version>
-        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.imooc.pan</groupId>-->
-<!--            <artifactId>r-pan-lock-redis</artifactId>-->
+<!--            <artifactId>r-pan-lock-local</artifactId>-->
 <!--            <version>1.0</version>-->
 <!--        </dependency>-->
+        <dependency>
+            <groupId>com.imooc.pan</groupId>
+            <artifactId>r-pan-lock-redis</artifactId>
+            <version>1.0</version>
+        </dependency>
         <dependency>
             <groupId>com.imooc.pan</groupId>
             <artifactId>r-pan-stream-rocketmq</artifactId>

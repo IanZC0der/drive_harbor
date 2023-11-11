@@ -180,7 +180,7 @@ public class FileController {
 
     @ApiOperation(
             value = "File download",
-            notes = "该接口提供了文件下载的功能",
+            notes = "This interface provides the functionality of downloading",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
