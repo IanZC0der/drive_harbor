@@ -1,0 +1,5 @@
+META-INF/spring-configuration-metadata.json
+com/imooc/pan/storage/engine/oss/OSSStorageEngine$ChunkUploadEntity.class
+com/imooc/pan/storage/engine/oss/initializer/OssBucketInitializer.class
+com/imooc/pan/storage/engine/oss/config/OssStorageEngineConfig.class
+com/imooc/pan/storage/engine/oss/OSSStorageEngine.class

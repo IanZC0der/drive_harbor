@@ -17,7 +17,8 @@
       "name": "com.imooc.pan.server.share-prefix",
       "type": "java.lang.String",
       "description": "share link prefix",
-      "sourceType": "com.imooc.pan.server.common.config.HarborServerConfig"
+      "sourceType": "com.imooc.pan.server.common.config.HarborServerConfig",
+      "defaultValue": "http:\/\/127.0.0.1:8080\/share\/"
     }
   ],
   "hints": []

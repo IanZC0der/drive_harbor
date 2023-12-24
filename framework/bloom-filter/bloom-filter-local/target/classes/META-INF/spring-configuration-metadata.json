@@ -10,7 +10,9 @@
     {
       "name": "com.imooc.pan.bloom.filter.local.items",
       "type": "java.util.List<com.imooc.pan.bloom.filter.local.LocalBloomFilterConfigItem>",
-      "sourceType": "com.imooc.pan.bloom.filter.local.LocalBloomFilterConfig"
+      "description": "collection of bloom filters",
+      "sourceType": "com.imooc.pan.bloom.filter.local.LocalBloomFilterConfig",
+      "defaultValue": null
     }
   ],
   "hints": []
